@@ -1,0 +1,100 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import { capitalize } from "../_utils";
+
+type TimerProps = {
+  workTime: number;
+  breakTime: number;
+  longBreakTime: number;
+  numberOfRounds: number;
+  autoStartWork: boolean;
+  autoStartBreak: boolean;
+};
+
+type TimerState = "work" | "break" | "longBreak";
+
+export default function Timer(props: TimerProps) {
+  const [time, setTime] = useState(0);
+  const [currentRound, setCurrentRound] = useState(1);
+  const [isRunning, setIsRunning] = useState(false);
+  const [timerState, setTimerState] = useState<TimerState>("work");
+
+  const timerStateTimes = useMemo(() => {
+    return {
+      work: props.workTime * 60,
+      break: props.breakTime * 60,
+      longBreak: props.longBreakTime * 60,
+    };
+  }, [props]);
+
+  useEffect(() => {
+    const timeInterval = setInterval(() => {
+      if (time === 1) {
+        clearInterval(timeInterval);
+        progressRound();
+      } else if (!isRunning) {
+        clearInterval(timeInterval);
+      } else {
+        setTime((prevTime) => prevTime - 1);
+      }
+    }, 1000);
+
+    return () => clearInterval(timeInterval);
+  });
+
+  useEffect(() => {
+    setTime(timerStateTimes[timerState]);
+  }, [timerState, timerStateTimes]);
+
+  const getNextState = (timerState: TimerState) => {
+    if (timerState === "break" || timerState === "longBreak") {
+      return "work";
+    }
+
+    return currentRound % props.numberOfRounds === 0 ? "longBreak" : "break";
+  };
+
+  const progressRound = () => {
+    if (timerState !== "work") {
+      // Reset if prevround was the number of rounds set
+      setCurrentRound((prevRound) => (prevRound % props.numberOfRounds) + 1);
+      setIsRunning(props.autoStartWork);
+    } else {
+      setIsRunning(props.autoStartBreak);
+    }
+    setTimerState((timerState) => getNextState(timerState));
+  };
+
+  const reset = () => {
+    setTime(timerStateTimes[timerState]);
+    setIsRunning(false);
+  };
+
+  const formatTime = () => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  };
+
+  return (
+    <div className="flex flex-col items-center">
+      <h1>
+        Round {currentRound}/{props.numberOfRounds}
+      </h1>
+
+      <h2>{capitalize(timerState)}</h2>
+
+      <h1>{formatTime()}</h1>
+
+      <div className="flex gap-2">
+        <button onClick={() => setIsRunning(!isRunning)}>
+          {!isRunning ? "Start" : "Stop"}
+        </button>
+        <button onClick={reset}>Reset</button>
+        <button onClick={progressRound}>Skip</button>
+      </div>
+    </div>
+  );
+}
