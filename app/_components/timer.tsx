@@ -12,7 +12,7 @@ type TimerProps = {
   autoStartBreak: boolean;
 };
 
-type TimerState = "work" | "break" | "longBreak";
+type TimerState = "work" | "shortBreak" | "longBreak";
 
 export default function Timer(props: TimerProps) {
   const [time, setTime] = useState(0);
@@ -23,10 +23,18 @@ export default function Timer(props: TimerProps) {
   const timerStateTimes = useMemo(() => {
     return {
       work: props.workTime * 60,
-      break: props.breakTime * 60,
+      shortBreak: props.breakTime * 60,
       longBreak: props.longBreakTime * 60,
     };
   }, [props]);
+
+  const timerStateTitles = useMemo(() => {
+    return {
+      work: "work",
+      shortBreak: "short break",
+      longBreak: "long break",
+    };
+  }, []);
 
   useEffect(() => {
     const timeInterval = setInterval(() => {
@@ -48,11 +56,13 @@ export default function Timer(props: TimerProps) {
   }, [timerState, timerStateTimes]);
 
   const getNextState = (timerState: TimerState) => {
-    if (timerState === "break" || timerState === "longBreak") {
+    if (timerState === "shortBreak" || timerState === "longBreak") {
       return "work";
     }
 
-    return currentRound % props.numberOfRounds === 0 ? "longBreak" : "break";
+    return currentRound % props.numberOfRounds === 0
+      ? "longBreak"
+      : "shortBreak";
   };
 
   const progressRound = () => {
@@ -84,7 +94,7 @@ export default function Timer(props: TimerProps) {
         Round {currentRound}/{props.numberOfRounds}
       </h1>
 
-      <h2>{capitalize(timerState)}</h2>
+      <h2>{capitalize(timerStateTitles[timerState])}</h2>
 
       <h1>{formatTime()}</h1>
 
