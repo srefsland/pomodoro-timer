@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { capitalize } from "../_utils";
+import TimerControlButton from "./timer-control-button";
 
 type TimerProps = {
   workTime: number;
@@ -94,16 +95,15 @@ export default function Timer(props: TimerProps) {
         Round {currentRound}/{props.numberOfRounds}
       </h1>
 
-      <h2>{capitalize(timerStateTitles[timerState])}</h2>
-
-      <h1>{formatTime()}</h1>
-
+      <h1>{capitalize(timerStateTitles[timerState])}</h1>
+      <h1 className="mb-4 text-6xl">{formatTime()}</h1>
       <div className="flex gap-2">
-        <button onClick={() => setIsRunning(!isRunning)}>
-          {!isRunning ? "Start" : "Stop"}
-        </button>
-        <button onClick={reset}>Reset</button>
-        <button onClick={progressRound}>Skip</button>
+        <TimerControlButton
+          label={!isRunning ? "Start" : "Stop"}
+          onClick={() => setIsRunning(!isRunning)}
+        />
+        <TimerControlButton label="Reset" onClick={reset} />
+        <TimerControlButton label="Skip" onClick={progressRound} />
       </div>
     </div>
   );
