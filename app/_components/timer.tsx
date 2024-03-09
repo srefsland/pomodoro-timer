@@ -5,17 +5,12 @@ import { capitalize } from "../_utils";
 import TimerControlButton from "./timer-control-button";
 
 type TimerProps = {
-  workTime: number;
-  breakTime: number;
-  longBreakTime: number;
-  numberOfRounds: number;
-  autoStartWork: boolean;
-  autoStartBreak: boolean;
+  timerConfig: TimerConfig;
 };
 
 type TimerState = "work" | "shortBreak" | "longBreak";
 
-export default function Timer(props: TimerProps) {
+export default function Timer({ timerConfig }: TimerProps) {
   const [time, setTime] = useState(0);
   const [currentRound, setCurrentRound] = useState(1);
   const [isRunning, setIsRunning] = useState(false);
@@ -23,11 +18,11 @@ export default function Timer(props: TimerProps) {
 
   const timerStateTimes = useMemo(() => {
     return {
-      work: props.workTime * 60,
-      shortBreak: props.breakTime * 60,
-      longBreak: props.longBreakTime * 60,
+      work: timerConfig.workMinutes * 60,
+      shortBreak: timerConfig.shortBreakMinutes * 60,
+      longBreak: timerConfig.longBreakMinutes * 60,
     };
-  }, [props]);
+  }, [timerConfig]);
 
   const timerStateTitles = useMemo(() => {
     return {
@@ -61,7 +56,7 @@ export default function Timer(props: TimerProps) {
       return "work";
     }
 
-    return currentRound % props.numberOfRounds === 0
+    return currentRound % timerConfig.numberOfRounds === 0
       ? "longBreak"
       : "shortBreak";
   };
@@ -69,10 +64,10 @@ export default function Timer(props: TimerProps) {
   const progressRound = () => {
     if (timerState !== "work") {
       // Reset if prevround was the number of rounds set
-      setCurrentRound((prevRound) => (prevRound % props.numberOfRounds) + 1);
-      setIsRunning(props.autoStartWork);
+      setCurrentRound((prevRound) => (prevRound % timerConfig.numberOfRounds) + 1);
+      setIsRunning(timerConfig.autoStartWork);
     } else {
-      setIsRunning(props.autoStartBreak);
+      setIsRunning(timerConfig.autoStartBreak);
     }
     setTimerState((timerState) => getNextState(timerState));
   };
@@ -92,7 +87,7 @@ export default function Timer(props: TimerProps) {
   return (
     <div className="flex flex-col items-center">
       <h1>
-        Round {currentRound}/{props.numberOfRounds}
+        Round {currentRound}/{timerConfig.numberOfRounds}
       </h1>
 
       <h1>{capitalize(timerStateTitles[timerState])}</h1>
