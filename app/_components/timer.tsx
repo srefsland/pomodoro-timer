@@ -64,7 +64,9 @@ export default function Timer({ timerConfig }: TimerProps) {
   const progressRound = () => {
     if (timerState !== "work") {
       // Reset if prevround was the number of rounds set
-      setCurrentRound((prevRound) => (prevRound % timerConfig.numberOfRounds) + 1);
+      setCurrentRound(
+        (prevRound) => (prevRound % timerConfig.numberOfRounds) + 1
+      );
       setIsRunning(timerConfig.autoStartWork);
     } else {
       setIsRunning(timerConfig.autoStartBreak);
@@ -86,11 +88,11 @@ export default function Timer({ timerConfig }: TimerProps) {
 
   return (
     <div className="flex flex-col items-center">
-      <h1>
+      <h1 className="text-xl">
         Round {currentRound}/{timerConfig.numberOfRounds}
       </h1>
 
-      <h1>{capitalize(timerStateTitles[timerState])}</h1>
+      <h1 className="text-lg">{capitalize(timerStateTitles[timerState])}</h1>
       <h1 className="mb-4 text-6xl">{formatTime()}</h1>
       <div className="flex gap-2">
         <TimerControlButton
