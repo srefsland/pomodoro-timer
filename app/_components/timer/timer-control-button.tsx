@@ -9,7 +9,7 @@ export default function TimerControlButton(props: TimerControlButtonProps) {
   return (
     <button
       className="bg-black/85 hover:bg-white/85 hover:text-black text-white transition ease-in-out
-       font-bold py-2 px-4 rounded"
+       font-bold h-10 w-16 rounded"
       onClick={props.onClick}
     >
       {props.label}

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { capitalize } from "../_utils";
 import TimerControlButton from "./timer-control-button";
 
 type TimerProps = {
@@ -26,9 +25,9 @@ export default function Timer({ timerConfig }: TimerProps) {
 
   const timerStateTitles = useMemo(() => {
     return {
-      work: "work",
-      shortBreak: "short break",
-      longBreak: "long break",
+      work: "Focus",
+      shortBreak: "Short break",
+      longBreak: "Long break",
     };
   }, []);
 
@@ -50,6 +49,10 @@ export default function Timer({ timerConfig }: TimerProps) {
   useEffect(() => {
     setTime(timerStateTimes[timerState]);
   }, [timerState, timerStateTimes]);
+
+  useEffect(() => {
+    setIsRunning(false);
+  }, [timerConfig]);
 
   const getNextState = (timerState: TimerState) => {
     if (timerState === "shortBreak" || timerState === "longBreak") {
@@ -88,11 +91,10 @@ export default function Timer({ timerConfig }: TimerProps) {
 
   return (
     <div className="flex flex-col items-center">
-      <h1 className="text-xl">
-        Round {currentRound}/{timerConfig.numberOfRounds}
+      <h1 className="text-xl top-3 right-2 p-1.5 bg-black/85 rounded-3xl self-end">
+        {currentRound}/{timerConfig.numberOfRounds}
       </h1>
-
-      <h1 className="text-lg">{capitalize(timerStateTitles[timerState])}</h1>
+      <h1 className="text-2xl mb-2">{timerStateTitles[timerState]}</h1>
       <h1 className="mb-4 text-6xl">{formatTime()}</h1>
       <div className="flex gap-2">
         <TimerControlButton

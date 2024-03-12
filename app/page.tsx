@@ -1,20 +1,36 @@
+"use client";
+
 import Image from "next/image";
+import { useState } from "react";
 import lofi from "../public/lofi.png";
-import Timer from "./_components/timer";
+import SettingsModal from "./_components/modal/settings-modal";
+import SettingsBar from "./_components/settings-bar";
+import Timer from "./_components/timer/timer";
 
 export default function Home() {
-  const timerConfig: TimerConfig = {
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [timerConfig, setTimerConfig] = useState<TimerConfig>({
     workMinutes: 25,
     shortBreakMinutes: 5,
     longBreakMinutes: 15,
     numberOfRounds: 4,
     autoStartBreak: true,
     autoStartWork: true,
+  });
+
+  const handleSettingsClick = () => {
+    setIsSettingsOpen(true);
+  };
+
+  const handleSettingsSubmit = (timerConfig: TimerConfig) => {
+    setTimerConfig(timerConfig);
+    setIsSettingsOpen(false);
   };
 
   return (
     <>
       <div className="h-screen w-full flex items-center justify-center">
+        <SettingsBar onSettingsClick={handleSettingsClick} />
         <Image
           src={lofi}
           alt="lofi"
@@ -23,10 +39,16 @@ export default function Home() {
           placeholder="blur"
           className="-z-10 object-cover"
         />
-        <div className="bg-red-300/25 p-10 rounded-md">
+        <div className="bg-red-300/25 p-6 rounded-md relative">
           <Timer timerConfig={timerConfig} />
         </div>
       </div>
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        handleClose={() => setIsSettingsOpen(false)}
+        handleSubmit={handleSettingsSubmit}
+        initialTimerConfig={timerConfig}
+      />
     </>
   );
 }
