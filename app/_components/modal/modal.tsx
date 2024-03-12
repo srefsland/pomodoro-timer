@@ -39,7 +39,7 @@ export default function Modal(props: ModalProps) {
     <dialog
       ref={dialogRef}
       onClick={handleClickOutside}
-      className={`backdrop:bg-black backdrop:opacity-40 bg-transparent rounded-md p-8 w-full`}
+      className={`backdrop:bg-black backdrop:opacity-40 bg-transparent rounded-md`}
     >
       {props.children}
     </dialog>

@@ -51,7 +51,7 @@ export default function SettingsModal({
     <Modal isOpen={isOpen} onClose={handleClose}>
       <div
         className={
-          "flex flex-col items-center bg-indigo-950/75 py-10 px-5 w-full md:w-max md:m-auto"
+          "flex flex-col items-center bg-indigo-950/75 py-10 px-5 md:w-3/4 mx-auto"
         }
       >
         <h1 className={"text-3xl font-bold text-white text-center mb-6"}>

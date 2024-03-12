@@ -91,7 +91,9 @@ export default function Timer({ timerConfig }: TimerProps) {
 
   return (
     <div className="flex flex-col items-center">
-      <h1 className="text-xl top-3 right-2 p-1.5 bg-black/85 rounded-3xl self-end">
+      <h1
+        className={`text-xl p-1.5 bg-black/85 rounded-3xl self-end`}
+      >
         {currentRound}/{timerConfig.numberOfRounds}
       </h1>
       <h1 className="text-2xl mb-2">{timerStateTitles[timerState]}</h1>
