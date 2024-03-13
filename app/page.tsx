@@ -9,22 +9,9 @@ import Timer from "./_components/timer/timer";
 
 export default function Home() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [timerConfig, setTimerConfig] = useState<TimerConfig>({
-    workMinutes: 25,
-    shortBreakMinutes: 5,
-    longBreakMinutes: 15,
-    numberOfRounds: 4,
-    autoStartBreak: true,
-    autoStartWork: true,
-  });
 
   const handleSettingsClick = () => {
     setIsSettingsOpen(true);
-  };
-
-  const handleSettingsSubmit = (timerConfig: TimerConfig) => {
-    setTimerConfig(timerConfig);
-    setIsSettingsOpen(false);
   };
 
   return (
@@ -40,14 +27,12 @@ export default function Home() {
           className="-z-10 object-cover"
         />
         <div className="bg-red-300/25 p-6 rounded-md relative">
-          <Timer timerConfig={timerConfig} />
+          <Timer />
         </div>
       </div>
       <SettingsModal
         isOpen={isSettingsOpen}
         handleClose={() => setIsSettingsOpen(false)}
-        handleSubmit={handleSettingsSubmit}
-        initialTimerConfig={timerConfig}
       />
     </>
   );

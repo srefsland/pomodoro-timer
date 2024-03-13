@@ -1,57 +1,47 @@
+import { useTimerConfigStore } from "@/app/_store";
+import { TimerConfig } from "@/app/_types";
 import { Slider, Switch } from "@nextui-org/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modal from "./modal";
 
 type SettingsModalProps = {
   isOpen: boolean;
   handleClose: () => void;
-  handleSubmit: (timerConfig: TimerConfig) => void;
-  initialTimerConfig: TimerConfig;
 };
 
 export default function SettingsModal({
   isOpen,
   handleClose,
-  handleSubmit,
-  initialTimerConfig,
 }: SettingsModalProps) {
-  const [workMinutes, setWorkMinutes] = useState(
-    initialTimerConfig.workMinutes
+  const [timerConfig, setTimerConfig, hasHydrated] = useTimerConfigStore(
+    (state) => [state.timerConfig, state.setTimerConfig, state._hasRehydrated]
   );
-  const [shortBreakMinutes, setShortBreakMinutes] = useState(
-    initialTimerConfig.shortBreakMinutes
-  );
-  const [longBreakMinutes, setLongBreakMinutes] = useState(
-    initialTimerConfig.longBreakMinutes
-  );
-  const [numberOfRounds, setNumberOfRounds] = useState(
-    initialTimerConfig.numberOfRounds
-  );
-  const [autoStartWork, setAutoStartWork] = useState(
-    initialTimerConfig.autoStartWork
-  );
-  const [autoStartBreak, setAutoStartBreak] = useState(
-    initialTimerConfig.autoStartBreak
-  );
+
+  const [timerSettings, setTimerSettings] = useState<TimerConfig>(timerConfig);
 
   const handleSettingsSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const timerConfig: TimerConfig = {
-      workMinutes,
-      shortBreakMinutes,
-      longBreakMinutes,
-      numberOfRounds,
-      autoStartWork,
-      autoStartBreak,
-    };
-    handleSubmit(timerConfig);
+    const timerConfig: TimerConfig = timerSettings;
+    setTimerConfig(timerConfig);
+    handleClose();
   };
+
+  useEffect(() => {
+    if (hasHydrated) {
+      setTimerSettings(timerConfig);
+    }
+  }, [hasHydrated, timerConfig]);
+
+  // If the store has not hydrated, return null
+  if (!hasHydrated) {
+    return null;
+  }
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose}>
       <div
         className={
-          "flex flex-col items-center bg-indigo-950/75 py-10 px-5 md:w-3/4 mx-auto"
+          "flex flex-col items-center bg-indigo-950/85 py-10 px-5 md:w-3/4 mx-auto transition ease-in-out rounded-md"
         }
       >
         <h1 className={"text-3xl font-bold text-white text-center mb-6"}>
@@ -64,9 +54,11 @@ export default function SettingsModal({
             step={1}
             maxValue={90}
             minValue={1}
-            defaultValue={initialTimerConfig.workMinutes}
+            defaultValue={timerConfig.workMinutes}
             className="max-w-md text-white"
-            onChange={(e) => setWorkMinutes(e as number)}
+            onChange={(e) =>
+              setTimerSettings({ ...timerSettings, workMinutes: e as number })
+            }
           />
           <Slider
             size="sm"
@@ -74,9 +66,14 @@ export default function SettingsModal({
             step={1}
             maxValue={90}
             minValue={1}
-            defaultValue={initialTimerConfig.shortBreakMinutes}
+            defaultValue={timerConfig.shortBreakMinutes}
             className="max-w-md text-white"
-            onChange={(e) => setShortBreakMinutes(e as number)}
+            onChange={(e) =>
+              setTimerSettings({
+                ...timerSettings,
+                shortBreakMinutes: e as number,
+              })
+            }
           />
           <Slider
             size="sm"
@@ -84,9 +81,14 @@ export default function SettingsModal({
             step={1}
             maxValue={90}
             minValue={1}
-            defaultValue={initialTimerConfig.longBreakMinutes}
+            defaultValue={timerConfig.longBreakMinutes}
             className="max-w-md text-white"
-            onChange={(e) => setLongBreakMinutes(e as number)}
+            onChange={(e) =>
+              setTimerSettings({
+                ...timerSettings,
+                longBreakMinutes: e as number,
+              })
+            }
           />
           <Slider
             size="sm"
@@ -94,16 +96,26 @@ export default function SettingsModal({
             step={1}
             maxValue={12}
             minValue={1}
-            defaultValue={initialTimerConfig.numberOfRounds}
+            defaultValue={timerConfig.numberOfRounds}
             className="max-w-md text-white mb-2"
-            onChange={(e) => setNumberOfRounds(e as number)}
+            onChange={(e) =>
+              setTimerSettings({
+                ...timerSettings,
+                numberOfRounds: e as number,
+              })
+            }
           />
           <Switch
             defaultSelected
             size="sm"
             className="mb-4 mr-4"
-            defaultChecked={initialTimerConfig.autoStartWork}
-            onChange={(e) => setAutoStartWork(e.target.checked)}
+            defaultChecked={timerConfig.autoStartWork}
+            onChange={(e) =>
+              setTimerSettings({
+                ...timerSettings,
+                autoStartWork: e.target.checked,
+              })
+            }
           >
             <h1 className="text-white">Auto-Start Work Timer</h1>
           </Switch>
@@ -111,8 +123,13 @@ export default function SettingsModal({
             defaultSelected
             size="sm"
             className="mb-6"
-            defaultChecked={initialTimerConfig.autoStartBreak}
-            onChange={(e) => setAutoStartBreak(e.target.checked)}
+            defaultChecked={timerConfig.autoStartBreak}
+            onChange={(e) =>
+              setTimerSettings({
+                ...timerSettings,
+                autoStartBreak: e.target.checked,
+              })
+            }
           >
             <h1 className="text-white">Auto-Start Break Timer</h1>
           </Switch>

@@ -2,18 +2,17 @@
 
 import { useEffect, useMemo, useState } from "react";
 import TimerControlButton from "./timer-control-button";
-
-type TimerProps = {
-  timerConfig: TimerConfig;
-};
+import { useTimerConfigStore } from "@/app/_store";
 
 type TimerState = "work" | "shortBreak" | "longBreak";
 
-export default function Timer({ timerConfig }: TimerProps) {
+export default function Timer() {
   const [time, setTime] = useState(0);
   const [currentRound, setCurrentRound] = useState(1);
   const [isRunning, setIsRunning] = useState(false);
   const [timerState, setTimerState] = useState<TimerState>("work");
+
+  const timerConfig = useTimerConfigStore((state) => state.timerConfig);
 
   const timerStateTimes = useMemo(() => {
     return {
@@ -91,9 +90,7 @@ export default function Timer({ timerConfig }: TimerProps) {
 
   return (
     <div className="flex flex-col items-center">
-      <h1
-        className={`text-xl p-1.5 bg-black/85 rounded-3xl self-end`}
-      >
+      <h1 className={`text-xl p-1.5 bg-black/85 rounded-3xl self-end`}>
         {currentRound}/{timerConfig.numberOfRounds}
       </h1>
       <h1 className="text-2xl mb-2">{timerStateTitles[timerState]}</h1>

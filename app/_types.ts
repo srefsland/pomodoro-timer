@@ -1,4 +1,4 @@
-type TimerConfig = {
+export type TimerConfig = {
   workMinutes: number;
   shortBreakMinutes: number;
   longBreakMinutes: number;
