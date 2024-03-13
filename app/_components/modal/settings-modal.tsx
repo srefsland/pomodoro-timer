@@ -27,12 +27,13 @@ export default function SettingsModal({
   };
 
   useEffect(() => {
+    // Updates the settings if there is a peristed timer config
     if (hasHydrated) {
       setTimerSettings(timerConfig);
     }
   }, [hasHydrated, timerConfig]);
 
-  // If the store has not hydrated, return null
+  // If the store has not hydrated, wait for it to hydrate to prevent default values from being set
   if (!hasHydrated) {
     return null;
   }
