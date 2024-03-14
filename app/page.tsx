@@ -16,7 +16,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="h-screen w-full flex items-center justify-center">
+      <div className="relative h-screen w-full flex items-center justify-center">
         <SettingsBar onSettingsClick={handleSettingsClick} />
         <Image
           src={lofi}

@@ -9,8 +9,8 @@ type ModalProps = {
 };
 
 export default function Modal(props: ModalProps) {
-  // dialog ref
   const dialogRef = React.useRef<HTMLDialogElement>(null);
+
   // Open close
   React.useEffect(() => {
     if (props.isOpen) {
@@ -21,7 +21,7 @@ export default function Modal(props: ModalProps) {
   }, [props.isOpen]);
 
   // If clicked outside bounding rect, close
-  const handleClickOutside = (e: React.MouseEvent<HTMLDialogElement>) => {
+  const handlePointerDown = (e: React.PointerEvent<HTMLDialogElement>) => {
     const boundingBox = dialogRef.current?.getBoundingClientRect();
     if (!boundingBox) return;
 
@@ -38,7 +38,7 @@ export default function Modal(props: ModalProps) {
   return (
     <dialog
       ref={dialogRef}
-      onClick={handleClickOutside}
+      onPointerDown={handlePointerDown}
       className={`backdrop:bg-black backdrop:opacity-40 bg-transparent rounded-md`}
     >
       {props.children}
