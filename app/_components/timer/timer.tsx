@@ -98,11 +98,11 @@ export default function Timer() {
 
   return (
     <div className="flex flex-col items-center">
-      <h1 className={`text-xl p-1.5 bg-black/85 rounded-3xl self-end`}>
+      <h1 className={`text-xl p-1.5 bg-black/85 rounded-3xl self-end md:text-2xl`}>
         {currentRound}/{timerConfig.numberOfRounds}
       </h1>
-      <h1 className="text-2xl mb-2">{timerStateTitles[timerState]}</h1>
-      <h1 className="mb-4 text-6xl">{formatTime()}</h1>
+      <h1 className="text-2xl mb-2 md:text-3xl">{timerStateTitles[timerState]}</h1>
+      <h1 className="mb-4 text-6xl md:text-7xl">{formatTime()}</h1>
       <div className="flex gap-2">
         <TimerControlButton
           label={!isRunning ? "Start" : "Stop"}
