@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { IoMdClose } from "react-icons/io";
 
 type ModalProps = {
   children: React.ReactNode;
@@ -41,6 +42,12 @@ export default function Modal(props: ModalProps) {
       onPointerDown={handlePointerDown}
       className={`backdrop:bg-black backdrop:opacity-40 bg-transparent rounded-md`}
     >
+      <div
+        className="absolute top-2 right-2 hover:bg-gray-200/25 rounded-md"
+        onClick={props.onClose}
+      >
+        <IoMdClose className="size-5 text-gray-400" />
+      </div>
       {props.children}
     </dialog>
   );
