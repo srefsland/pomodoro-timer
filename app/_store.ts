@@ -36,7 +36,7 @@ export const useTimerConfigStore = create<TimerConfigState>()(
 export const useTimerAudioStore = create<TimerAudioState>()(
   persist(
     (set) => ({
-      audioVolume: 0.5,
+      audioVolume: 50,
       setAudioVolume: (volume: number) => {
         set({ audioVolume: volume });
       },

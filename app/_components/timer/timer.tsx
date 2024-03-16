@@ -35,7 +35,7 @@ export default function Timer() {
   }, []);
 
   useEffect(() => {
-    const timeInterval = setInterval(async () => {
+    const timeInterval = setInterval(() => {
       if (time === 1) {
         clearInterval(timeInterval);
         progressRound();
@@ -56,6 +56,13 @@ export default function Timer() {
   useEffect(() => {
     setIsRunning(false);
   }, [timerConfig]);
+
+  useEffect(() => {
+    console.log(audioVolume);
+    if (audioRef.current) {
+      audioRef.current.volume = audioVolume / 100;
+    }
+  }, [audioVolume]);
 
   const getNextState = (timerState: TimerState) => {
     if (timerState === "shortBreak" || timerState === "longBreak") {
@@ -80,8 +87,7 @@ export default function Timer() {
     setTimerState((timerState) => getNextState(timerState));
 
     if (audioRef.current) {
-      audioRef.current.volume = audioVolume / 100;
-      await audioRef.current?.play();
+      await audioRef.current.play();
     }
   };
 
