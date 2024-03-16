@@ -4,9 +4,12 @@ import { TimerConfig } from "./_types";
 
 interface TimerConfigState {
   timerConfig: TimerConfig;
-  _hasRehydrated: boolean;
   setTimerConfig: (timerConfig: TimerConfig) => void;
-  setHasRehydrated: (state: boolean) => void;
+}
+
+interface TimerAudioState {
+  audioVolume: number;
+  setAudioVolume: (volume: number) => void;
 }
 
 export const useTimerConfigStore = create<TimerConfigState>()(
@@ -20,19 +23,26 @@ export const useTimerConfigStore = create<TimerConfigState>()(
         autoStartBreak: true,
         autoStartWork: true,
       },
-      _hasRehydrated: false,
       setTimerConfig: (timerConfig: TimerConfig) => {
         set({ timerConfig });
-      },
-      setHasRehydrated: (state: boolean) => {
-        set({ _hasRehydrated: state });
       },
     }),
     {
       name: "timer-config",
-      onRehydrateStorage: () => (state) => {
-        state?.setHasRehydrated(true);
+    }
+  )
+);
+
+export const useTimerAudioStore = create<TimerAudioState>()(
+  persist(
+    (set) => ({
+      audioVolume: 0.5,
+      setAudioVolume: (volume: number) => {
+        set({ audioVolume: volume });
       },
+    }),
+    {
+      name: "timer-audio",
     }
   )
 );

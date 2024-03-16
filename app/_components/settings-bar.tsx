@@ -1,14 +1,10 @@
 import { IoMdInformationCircleOutline, IoMdSettings } from "react-icons/io";
-import { Slider } from "@nextui-org/react";
-import React from "react";
 
 export default function SettingsBar({
   onSettingsClick,
 }: {
   onSettingsClick: () => void;
 }) {
-  const [hover, setHover] = React.useState(false);
-
   return (
     <div className="absolute top-4 right-4 flex gap-4">
       <button

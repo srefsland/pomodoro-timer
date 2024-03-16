@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useEffect, useRef } from "react";
 import { IoMdClose } from "react-icons/io";
 
 type ModalProps = {
@@ -10,10 +10,10 @@ type ModalProps = {
 };
 
 export default function Modal(props: ModalProps) {
-  const dialogRef = React.useRef<HTMLDialogElement>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
   // Open close
-  React.useEffect(() => {
+  useEffect(() => {
     if (props.isOpen) {
       dialogRef.current?.showModal();
     } else {

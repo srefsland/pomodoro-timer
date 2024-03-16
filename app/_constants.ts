@@ -1,0 +1,1 @@
+export const KITCHEN_TIMER_SOUND = "/kitchen_timer.mp3";

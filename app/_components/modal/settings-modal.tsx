@@ -1,6 +1,6 @@
-import { useTimerConfigStore } from "@/app/_store";
+import { useTimerAudioStore, useTimerConfigStore } from "@/app/_store";
 import { TimerConfig } from "@/app/_types";
-import { Slider, Switch } from "@nextui-org/react";
+import { Divider, Slider, Switch } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import Modal from "./modal";
 
@@ -13,30 +13,29 @@ export default function SettingsModal({
   isOpen,
   handleClose,
 }: SettingsModalProps) {
-  const [timerConfig, setTimerConfig, hasHydrated] = useTimerConfigStore(
-    (state) => [state.timerConfig, state.setTimerConfig, state._hasRehydrated]
-  );
-
-  const [timerSettings, setTimerSettings] = useState<TimerConfig>(timerConfig);
+  const [timerConfig, setTimerConfig] = useTimerConfigStore((state) => [
+    state.timerConfig,
+    state.setTimerConfig,
+  ]);
+  const [audioVolume, setAudioVolume] = useTimerAudioStore((state) => [
+    state.audioVolume,
+    state.setAudioVolume,
+  ]);
+  const [timerConfigForm, setTimerConfigForm] =
+    useState<TimerConfig>(timerConfig);
+  const [audioVolumeForm, setAudioVolumeForm] = useState(audioVolume);
 
   const handleSettingsSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const timerConfig: TimerConfig = timerSettings;
-    setTimerConfig(timerConfig);
+    setTimerConfig(timerConfigForm);
+    setAudioVolume(audioVolumeForm);
     handleClose();
   };
 
   useEffect(() => {
-    // Updates the settings if there is a peristed timer config
-    if (hasHydrated) {
-      setTimerSettings(timerConfig);
-    }
-  }, [hasHydrated, timerConfig]);
-
-  // If the store has not hydrated, wait for it to hydrate to prevent default values from being set
-  if (!hasHydrated) {
-    return null;
-  }
+    setTimerConfigForm(timerConfig);
+    setAudioVolumeForm(audioVolume);
+  }, [audioVolume, timerConfig, isOpen]);
 
   return (
     <Modal isOpen={isOpen} onClose={handleClose}>
@@ -55,10 +54,13 @@ export default function SettingsModal({
             step={1}
             maxValue={90}
             minValue={1}
-            defaultValue={timerConfig.workMinutes}
+            value={timerConfigForm.workMinutes}
             className="max-w-md text-white"
             onChange={(e) =>
-              setTimerSettings({ ...timerSettings, workMinutes: e as number })
+              setTimerConfigForm({
+                ...timerConfigForm,
+                workMinutes: e as number,
+              })
             }
           />
           <Slider
@@ -67,11 +69,11 @@ export default function SettingsModal({
             step={1}
             maxValue={90}
             minValue={1}
-            defaultValue={timerConfig.shortBreakMinutes}
+            value={timerConfigForm.shortBreakMinutes}
             className="max-w-md text-white"
             onChange={(e) =>
-              setTimerSettings({
-                ...timerSettings,
+              setTimerConfigForm({
+                ...timerConfigForm,
                 shortBreakMinutes: e as number,
               })
             }
@@ -82,11 +84,11 @@ export default function SettingsModal({
             step={1}
             maxValue={90}
             minValue={1}
-            defaultValue={timerConfig.longBreakMinutes}
+            value={timerConfigForm.longBreakMinutes}
             className="max-w-md text-white"
             onChange={(e) =>
-              setTimerSettings({
-                ...timerSettings,
+              setTimerConfigForm({
+                ...timerConfigForm,
                 longBreakMinutes: e as number,
               })
             }
@@ -97,11 +99,11 @@ export default function SettingsModal({
             step={1}
             maxValue={12}
             minValue={1}
-            defaultValue={timerConfig.numberOfRounds}
+            value={timerConfigForm.numberOfRounds}
             className="max-w-md text-white mb-2"
             onChange={(e) =>
-              setTimerSettings({
-                ...timerSettings,
+              setTimerConfigForm({
+                ...timerConfigForm,
                 numberOfRounds: e as number,
               })
             }
@@ -110,10 +112,10 @@ export default function SettingsModal({
             defaultSelected
             size="sm"
             className="mb-4 mr-4"
-            defaultChecked={timerConfig.autoStartWork}
+            isSelected={timerConfigForm.autoStartWork}
             onChange={(e) =>
-              setTimerSettings({
-                ...timerSettings,
+              setTimerConfigForm({
+                ...timerConfigForm,
                 autoStartWork: e.target.checked,
               })
             }
@@ -124,16 +126,27 @@ export default function SettingsModal({
             defaultSelected
             size="sm"
             className="mb-6"
-            defaultChecked={timerConfig.autoStartBreak}
+            isSelected={timerConfigForm.autoStartBreak}
             onChange={(e) =>
-              setTimerSettings({
-                ...timerSettings,
+              setTimerConfigForm({
+                ...timerConfigForm,
                 autoStartBreak: e.target.checked,
               })
             }
           >
             <h1 className="text-white">Auto-Start Break Timer</h1>
           </Switch>
+          <Divider className="mb-4 bg-gray-500" />
+          <Slider
+            size="sm"
+            label="Timer Volume"
+            step={1}
+            maxValue={100}
+            minValue={0}
+            value={audioVolumeForm}
+            className="max-w-md text-white mb-4"
+            onChange={(e) => setAudioVolumeForm(e as number)}
+          />
           <div className="flex justify-center gap-4">
             <button
               type="submit"
@@ -142,6 +155,7 @@ export default function SettingsModal({
               Save
             </button>
             <button
+              type="button"
               className="bg-black/85 p-2 rounded-md hover:bg-black/60 transition ease-in-out text-white"
               onClick={handleClose}
             >
