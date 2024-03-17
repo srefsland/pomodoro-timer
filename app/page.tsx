@@ -7,20 +7,17 @@ import lofi from "../public/lofi.png";
 import SettingsModal from "./_components/modal/settings-modal";
 import SettingsBar from "./_components/settings-bar";
 import Timer from "./_components/timer/timer";
+import { useDisclosure } from "@nextui-org/react";
 
 const REPO_URL = "https://github.com/simenrefsland/pomodoro-timer";
 
 export default function Home() {
-  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-
-  const handleSettingsClick = () => {
-    setIsSettingsOpen(true);
-  };
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
     <>
       <div className="relative h-screen w-full flex items-center justify-center">
-        <SettingsBar onSettingsClick={handleSettingsClick} />
+        <SettingsBar onSettingsClick={onOpen} />
         <Image
           src={lofi}
           alt="lofi"
@@ -40,10 +37,7 @@ export default function Home() {
           <IoLogoGithub className="inline size-6" />
         </a>
       </div>
-      <SettingsModal
-        isOpen={isSettingsOpen}
-        handleClose={() => setIsSettingsOpen(false)}
-      />
+      <SettingsModal isOpen={isOpen} handleClose={onOpenChange} />
     </>
   );
 }

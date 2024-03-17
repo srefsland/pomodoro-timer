@@ -2,8 +2,11 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import TimerControlButton from "./timer-control-button";
-import { useTimerAudioStore, useTimerConfigStore } from "@/app/_store";
-import { KITCHEN_TIMER_SOUND } from "@/app/_constants";
+import {
+  useTimerVolumeStore,
+  useTimerConfigStore,
+  useSelectedTimerSoundStore,
+} from "@/app/_store";
 
 type TimerState = "work" | "shortBreak" | "longBreak";
 
@@ -16,7 +19,8 @@ export default function Timer() {
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const timerConfig = useTimerConfigStore((state) => state.timerConfig);
-  const audioVolume = useTimerAudioStore((state) => state.audioVolume);
+  const audioVolume = useTimerVolumeStore((state) => state.audioVolume);
+  const timerSound = useSelectedTimerSoundStore((state) => state.timerSound);
 
   const timerStateTimes = useMemo(() => {
     return {
@@ -58,7 +62,6 @@ export default function Timer() {
   }, [timerConfig]);
 
   useEffect(() => {
-    console.log(audioVolume);
     if (audioRef.current) {
       audioRef.current.volume = audioVolume / 100;
     }
@@ -120,7 +123,7 @@ export default function Timer() {
         <TimerControlButton label="Reset" onClick={reset} />
         <TimerControlButton label="Skip" onClick={progressRound} />
       </div>
-      <audio ref={audioRef} src={KITCHEN_TIMER_SOUND} />
+      {timerSound.file && <audio ref={audioRef} src={timerSound.file} />}
     </div>
   );
 }

@@ -1,8 +1,23 @@
-import { useTimerAudioStore, useTimerConfigStore } from "@/app/_store";
+import {
+  useSelectedTimerSoundStore,
+  useTimerConfigStore,
+  useTimerSoundsStore,
+  useTimerVolumeStore,
+} from "@/app/_store";
 import { TimerConfig } from "@/app/_types";
-import { Divider, Slider, Switch } from "@nextui-org/react";
+import {
+  Divider,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  Select,
+  SelectItem,
+  Slider,
+  Switch,
+} from "@nextui-org/react";
 import { useEffect, useState } from "react";
-import Modal from "./modal";
 
 type SettingsModalProps = {
   isOpen: boolean;
@@ -17,153 +32,164 @@ export default function SettingsModal({
     state.timerConfig,
     state.setTimerConfig,
   ]);
-  const [audioVolume, setAudioVolume] = useTimerAudioStore((state) => [
+  const [timerVolume, setTimerVolume] = useTimerVolumeStore((state) => [
     state.audioVolume,
     state.setAudioVolume,
   ]);
+  const [timerSound, setTimerSound] = useSelectedTimerSoundStore((state) => [
+    state.timerSound,
+    state.setTimerSound,
+  ]);
+  const timerSounds = useTimerSoundsStore((state) => state.sounds);
+
   const [timerConfigForm, setTimerConfigForm] =
     useState<TimerConfig>(timerConfig);
-  const [audioVolumeForm, setAudioVolumeForm] = useState(audioVolume);
+  const [timerVolumeForm, setTimerVolumeForm] = useState(timerVolume);
+  const [timerSoundForm, setTimerSoundForm] = useState(timerSound);
 
   const handleSettingsSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setTimerConfig(timerConfigForm);
-    setAudioVolume(audioVolumeForm);
+    setTimerVolume(timerVolumeForm);
+    setTimerSound(timerSoundForm);
     handleClose();
   };
 
   useEffect(() => {
     setTimerConfigForm(timerConfig);
-    setAudioVolumeForm(audioVolume);
-  }, [audioVolume, timerConfig, isOpen]);
+    setTimerVolumeForm(timerVolume);
+    setTimerSoundForm(timerSound);
+  }, [timerVolume, timerConfig, timerSound, isOpen]);
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose}>
-      <div
-        className={
-          "flex flex-col items-center bg-indigo-950/85 py-8 px-5 transition ease-in-out rounded-md sm:max-w-72"
-        }
-      >
-        <h1 className={"text-3xl font-bold text-white text-center mb-6"}>
-          Settings
-        </h1>
+    <Modal isOpen={isOpen} onClose={handleClose} className="bg-indigo-950/75">
+      <ModalContent>
+        <ModalHeader>Settings</ModalHeader>
         <form onSubmit={handleSettingsSubmit}>
-          <Slider
-            size="sm"
-            label="Focus Time"
-            step={1}
-            maxValue={90}
-            minValue={1}
-            value={timerConfigForm.workMinutes}
-            className="max-w-md text-white"
-            onChange={(e) =>
-              setTimerConfigForm({
-                ...timerConfigForm,
-                workMinutes: e as number,
-              })
-            }
-          />
-          <Slider
-            size="sm"
-            label="Short Break Time"
-            step={1}
-            maxValue={90}
-            minValue={1}
-            value={timerConfigForm.shortBreakMinutes}
-            className="max-w-md text-white"
-            onChange={(e) =>
-              setTimerConfigForm({
-                ...timerConfigForm,
-                shortBreakMinutes: e as number,
-              })
-            }
-          />
-          <Slider
-            size="sm"
-            label="Long Break Time"
-            step={1}
-            maxValue={90}
-            minValue={1}
-            value={timerConfigForm.longBreakMinutes}
-            className="max-w-md text-white"
-            onChange={(e) =>
-              setTimerConfigForm({
-                ...timerConfigForm,
-                longBreakMinutes: e as number,
-              })
-            }
-          />
-          <Slider
-            size="sm"
-            label="Number of Rounds"
-            step={1}
-            maxValue={12}
-            minValue={1}
-            value={timerConfigForm.numberOfRounds}
-            className="max-w-md text-white mb-2"
-            onChange={(e) =>
-              setTimerConfigForm({
-                ...timerConfigForm,
-                numberOfRounds: e as number,
-              })
-            }
-          />
-          <Switch
-            defaultSelected
-            size="sm"
-            className="mb-4 mr-4"
-            isSelected={timerConfigForm.autoStartWork}
-            onChange={(e) =>
-              setTimerConfigForm({
-                ...timerConfigForm,
-                autoStartWork: e.target.checked,
-              })
-            }
-          >
-            <h1 className="text-white">Auto-Start Work Timer</h1>
-          </Switch>
-          <Switch
-            defaultSelected
-            size="sm"
-            className="mb-6"
-            isSelected={timerConfigForm.autoStartBreak}
-            onChange={(e) =>
-              setTimerConfigForm({
-                ...timerConfigForm,
-                autoStartBreak: e.target.checked,
-              })
-            }
-          >
-            <h1 className="text-white">Auto-Start Break Timer</h1>
-          </Switch>
-          <Divider className="mb-4 bg-gray-500" />
-          <Slider
-            size="sm"
-            label="Timer Volume"
-            step={1}
-            maxValue={100}
-            minValue={0}
-            value={audioVolumeForm}
-            className="max-w-md text-white mb-4"
-            onChange={(e) => setAudioVolumeForm(e as number)}
-          />
-          <div className="flex justify-center gap-4">
+          <ModalBody>
+            <Divider className="bg-gray-500" />
+            <ModalHeader>Timer Settings</ModalHeader>
+            <Slider
+              size="sm"
+              label="Focus Time"
+              step={1}
+              maxValue={90}
+              minValue={1}
+              value={timerConfigForm.workMinutes}
+              onChange={(e) =>
+                setTimerConfigForm({
+                  ...timerConfigForm,
+                  workMinutes: e as number,
+                })
+              }
+            />
+            <Slider
+              size="sm"
+              label="Short Break Time"
+              step={1}
+              maxValue={90}
+              minValue={1}
+              value={timerConfigForm.shortBreakMinutes}
+              onChange={(e) =>
+                setTimerConfigForm({
+                  ...timerConfigForm,
+                  shortBreakMinutes: e as number,
+                })
+              }
+            />
+            <Slider
+              size="sm"
+              label="Long Break Time"
+              step={1}
+              maxValue={90}
+              minValue={1}
+              value={timerConfigForm.longBreakMinutes}
+              onChange={(e) =>
+                setTimerConfigForm({
+                  ...timerConfigForm,
+                  longBreakMinutes: e as number,
+                })
+              }
+            />
+            <Slider
+              size="sm"
+              label="Number of Rounds"
+              step={1}
+              maxValue={12}
+              minValue={1}
+              value={timerConfigForm.numberOfRounds}
+              onChange={(e) =>
+                setTimerConfigForm({
+                  ...timerConfigForm,
+                  numberOfRounds: e as number,
+                })
+              }
+            />
+            <Switch
+              defaultSelected
+              size="sm"
+              isSelected={timerConfigForm.autoStartWork}
+              onChange={(e) =>
+                setTimerConfigForm({
+                  ...timerConfigForm,
+                  autoStartWork: e.target.checked,
+                })
+              }
+            >
+              <h1 className="text-white">Auto-Start Work Timer</h1>
+            </Switch>
+            <Switch
+              defaultSelected
+              size="sm"
+              isSelected={timerConfigForm.autoStartBreak}
+              onChange={(e) =>
+                setTimerConfigForm({
+                  ...timerConfigForm,
+                  autoStartBreak: e.target.checked,
+                })
+              }
+            >
+              <h1 className="text-white">Auto-Start Break Timer</h1>
+            </Switch>
+            <Divider className="bg-gray-500" />
+            <ModalHeader>Audio Settings</ModalHeader>
+            <Select
+              size="sm"
+              className="text-black mb-4"
+              disallowEmptySelection
+              defaultSelectedKeys={[timerSoundForm.name]}
+            >
+              {timerSounds.map((sound) => (
+                <SelectItem
+                  key={sound.name}
+                  value={sound.name}
+                  className="text-black"
+                  onClick={() => setTimerSoundForm(sound)}
+                >
+                  {sound.label}
+                </SelectItem>
+              ))}
+            </Select>
+            <Slider
+              size="sm"
+              label="Timer Volume"
+              step={1}
+              maxValue={100}
+              minValue={0}
+              value={timerVolumeForm}
+              onChange={(e) => setTimerVolumeForm(e as number)}
+            />
+          </ModalBody>
+          <ModalFooter>
             <button
               type="submit"
               className="bg-black/85 p-2 rounded-md hover:bg-black/60 transition ease-in-out text-white"
             >
               Save
             </button>
-            <button
-              type="button"
-              className="bg-black/85 p-2 rounded-md hover:bg-black/60 transition ease-in-out text-white"
-              onClick={handleClose}
-            >
-              Close
-            </button>
-          </div>
+          </ModalFooter>
         </form>
-      </div>
+      </ModalContent>
     </Modal>
   );
 }
