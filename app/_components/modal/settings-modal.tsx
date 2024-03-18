@@ -68,7 +68,7 @@ export default function SettingsModal({
         <form onSubmit={handleSettingsSubmit}>
           <ModalBody>
             <Divider className="bg-gray-500" />
-            <ModalHeader>Timer Settings</ModalHeader>
+            <ModalHeader >Timer Settings</ModalHeader>
             <Slider
               size="sm"
               label="Focus Time"
