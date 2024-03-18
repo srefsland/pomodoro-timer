@@ -6,7 +6,11 @@ import {
   useTimerVolumeStore,
 } from "@/app/_store";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { IoPlaySkipForward, IoPlaySkipForwardOutline, IoReload } from "react-icons/io5";
+import {
+  IoPlaySkipForward,
+  IoPlaySkipForwardOutline,
+  IoReload,
+} from "react-icons/io5";
 
 type TimerState = "work" | "shortBreak" | "longBreak";
 
@@ -109,14 +113,14 @@ export default function Timer() {
   return (
     <div className="flex flex-col items-center min-w-72">
       <h1
-        className={`text-2xl text-white border-1 w-16 py-1 rounded-3xl self-end mb-4 text-center`}
+        className="text-2xl text-white border-1 w-16 py-1 rounded-3xl self-end mb-4 text-center"
       >
         {currentRound}/{timerConfig.numberOfRounds}
       </h1>
-      <h1 className="text-4xl mb-2 font-medium">
+      <h1 className="text-4xl mb-2 font-medium font-mono">
         {timerStateTitles[timerState]}
       </h1>
-      <h1 className="mb-4 text-8xl font-medium">{formatTime()}</h1>
+      <h1 className="mb-4 text-8xl font-medium font-mono">{formatTime()}</h1>
       <div className="flex gap-4">
         <button
           onClick={() => {
