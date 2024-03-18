@@ -1,12 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
-import TimerControlButton from "./timer-control-button";
 import {
-  useTimerVolumeStore,
-  useTimerConfigStore,
   useSelectedTimerSoundStore,
+  useTimerConfigStore,
+  useTimerVolumeStore,
 } from "@/app/_store";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { IoPlaySkipForward, IoPlaySkipForwardOutline, IoReload } from "react-icons/io5";
 
 type TimerState = "work" | "shortBreak" | "longBreak";
 
@@ -107,21 +107,31 @@ export default function Timer() {
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <h1 className={`text-xl p-1.5 bg-black/85 rounded-3xl self-end`}>
+    <div className="flex flex-col items-center min-w-72">
+      <h1
+        className={`text-2xl text-white border-1 w-16 py-1 rounded-3xl self-end mb-4 text-center`}
+      >
         {currentRound}/{timerConfig.numberOfRounds}
       </h1>
-      <h1 className="text-2xl mb-2 md:text-3xl">
+      <h1 className="text-4xl mb-2 font-medium">
         {timerStateTitles[timerState]}
       </h1>
-      <h1 className="mb-4 text-6xl md:text-7xl">{formatTime()}</h1>
-      <div className="flex gap-2">
-        <TimerControlButton
-          label={!isRunning ? "Start" : "Stop"}
-          onClick={() => setIsRunning(!isRunning)}
-        />
-        <TimerControlButton label="Reset" onClick={reset} />
-        <TimerControlButton label="Skip" onClick={progressRound} />
+      <h1 className="mb-4 text-8xl font-medium">{formatTime()}</h1>
+      <div className="flex gap-4">
+        <button
+          onClick={() => {
+            setIsRunning(!isRunning);
+          }}
+          className="bg-white text-black w-20 py-2 rounded-3xl transition ease-in-out hover:text-white hover:bg-transparent hover:border-white border-1"
+        >
+          {!isRunning ? "Start" : "Stop"}
+        </button>
+        <button onClick={reset}>
+          <IoReload className="size-8 font-bold" />
+        </button>
+        <button onClick={progressRound}>
+          <IoPlaySkipForwardOutline className="size-8" />
+        </button>
       </div>
       {timerSound.file && <audio ref={audioRef} src={timerSound.file} />}
     </div>

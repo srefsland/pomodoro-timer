@@ -1,13 +1,12 @@
 "use client";
 
+import { useDisclosure } from "@nextui-org/react";
 import Image from "next/image";
-import { useState } from "react";
 import { IoLogoGithub } from "react-icons/io5";
-import lofi from "../public/lofi.png";
 import SettingsModal from "./_components/modal/settings-modal";
 import SettingsBar from "./_components/settings-bar";
 import Timer from "./_components/timer/timer";
-import { useDisclosure } from "@nextui-org/react";
+import forest from "/public/forest.png";
 
 const REPO_URL = "https://github.com/simenrefsland/pomodoro-timer";
 
@@ -19,16 +18,14 @@ export default function Home() {
       <div className="relative h-screen w-full flex items-center justify-center">
         <SettingsBar onSettingsClick={onOpen} />
         <Image
-          src={lofi}
-          alt="lofi"
+          src={forest}
+          alt="forest"
           fill
           sizes="100vw"
           placeholder="blur"
           className="-z-10 object-cover"
         />
-        <div className="bg-red-300/25 p-6 rounded-md relative">
-          <Timer />
-        </div>
+        <Timer />
         <a
           href={REPO_URL}
           target="_blank"

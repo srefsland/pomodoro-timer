@@ -62,7 +62,7 @@ export default function SettingsModal({
   }, [timerVolume, timerConfig, timerSound, isOpen]);
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} className="bg-indigo-950/75">
+    <Modal isOpen={isOpen} onClose={handleClose} className="bg-black/50">
       <ModalContent>
         <ModalHeader>Settings</ModalHeader>
         <form onSubmit={handleSettingsSubmit}>
@@ -183,7 +183,7 @@ export default function SettingsModal({
           <ModalFooter>
             <button
               type="submit"
-              className="bg-black/85 p-2 rounded-md hover:bg-black/60 transition ease-in-out text-white"
+              className="bg-white text-black w-24 py-2 rounded-3xl transition ease-in-out"
             >
               Save
             </button>
