@@ -72,6 +72,7 @@ export default function SettingsModal({
             <Slider
               size="sm"
               label="Focus Time"
+              className="light"
               step={1}
               maxValue={90}
               minValue={1}
@@ -86,6 +87,7 @@ export default function SettingsModal({
             <Slider
               size="sm"
               label="Short Break Time"
+              className="light"
               step={1}
               maxValue={90}
               minValue={1}
@@ -100,6 +102,7 @@ export default function SettingsModal({
             <Slider
               size="sm"
               label="Long Break Time"
+              className="light"
               step={1}
               maxValue={90}
               minValue={1}
@@ -114,6 +117,7 @@ export default function SettingsModal({
             <Slider
               size="sm"
               label="Number of Rounds"
+              className="light"
               step={1}
               maxValue={12}
               minValue={1}
@@ -153,7 +157,7 @@ export default function SettingsModal({
             <ModalHeader>Audio Settings</ModalHeader>
             <Select
               size="sm"
-              className="text-black mb-4"
+              className="mb-4"
               disallowEmptySelection
               defaultSelectedKeys={[timerSoundForm.name]}
             >
@@ -161,7 +165,6 @@ export default function SettingsModal({
                 <SelectItem
                   key={sound.name}
                   value={sound.name}
-                  className="text-black"
                   onClick={() => setTimerSoundForm(sound)}
                 >
                   {sound.label}
@@ -171,6 +174,7 @@ export default function SettingsModal({
             <Slider
               size="sm"
               label="Timer Volume"
+              className="light"
               step={1}
               maxValue={100}
               minValue={0}
