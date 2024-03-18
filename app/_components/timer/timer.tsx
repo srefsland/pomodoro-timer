@@ -49,7 +49,7 @@ export default function Timer() {
         const diff = startSeconds - elapsedTime;
         setTime(startSeconds - elapsedTime);
 
-        if (diff === 0) {
+        if (diff <= 0) {
           clearInterval(timeInterval);
           progressRound();
         }

@@ -126,7 +126,6 @@ export default function SettingsModal({
               }
             />
             <Switch
-              defaultSelected
               size="sm"
               isSelected={timerConfigForm.autoStartWork}
               onChange={(e) =>
@@ -139,7 +138,6 @@ export default function SettingsModal({
               <h1 className="text-white">Auto-Start Work Timer</h1>
             </Switch>
             <Switch
-              defaultSelected
               size="sm"
               isSelected={timerConfigForm.autoStartBreak}
               onChange={(e) =>
