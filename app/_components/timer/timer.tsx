@@ -6,16 +6,14 @@ import {
   useTimerVolumeStore,
 } from "@/app/_store";
 import { useEffect, useMemo, useRef, useState } from "react";
-import {
-  IoPlaySkipForward,
-  IoPlaySkipForwardOutline,
-  IoReload,
-} from "react-icons/io5";
+import { IoPlaySkipForwardOutline, IoReload } from "react-icons/io5";
 
 type TimerState = "work" | "shortBreak" | "longBreak";
 
 export default function Timer() {
   const [time, setTime] = useState(0);
+  const [startTime, setStartTime] = useState(0);
+  const [startSeconds, setStartSeconds] = useState(0);
   const [currentRound, setCurrentRound] = useState(1);
   const [isRunning, setIsRunning] = useState(false);
   const [timerState, setTimerState] = useState<TimerState>("work");
@@ -44,26 +42,38 @@ export default function Timer() {
 
   useEffect(() => {
     const timeInterval = setInterval(() => {
-      if (time === 1) {
-        clearInterval(timeInterval);
-        progressRound();
-      } else if (!isRunning) {
+      if (!isRunning) {
         clearInterval(timeInterval);
       } else {
-        setTime((prevTime) => prevTime - 1);
+        const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
+        const diff = startSeconds - elapsedTime;
+        setTime(startSeconds - elapsedTime);
+
+        if (diff === 0) {
+          clearInterval(timeInterval);
+          progressRound();
+        }
       }
-    }, 1000);
+    }, 250);
 
     return () => clearInterval(timeInterval);
   });
 
   useEffect(() => {
     setTime(timerStateTimes[timerState]);
+    setStartTime(Date.now());
+    setStartSeconds(timerStateTimes[timerState]);
   }, [timerState, timerStateTimes]);
 
   useEffect(() => {
     setIsRunning(false);
   }, [timerConfig]);
+
+  useEffect(() => {
+    window.document.title = `${formatTime(time)} | ${
+      timerStateTitles[timerState]
+    }`;
+  }, [time, timerState, timerStateTitles]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -91,6 +101,7 @@ export default function Timer() {
     } else {
       setIsRunning(timerConfig.autoStartBreak);
     }
+
     setTimerState((timerState) => getNextState(timerState));
 
     if (audioRef.current) {
@@ -98,12 +109,20 @@ export default function Timer() {
     }
   };
 
+  const toggleTimer = () => {
+    if (!isRunning) {
+      setStartTime(Date.now());
+      setStartSeconds(time);
+    }
+    setIsRunning(!isRunning);
+  };
+
   const reset = () => {
     setTime(timerStateTimes[timerState]);
     setIsRunning(false);
   };
 
-  const formatTime = () => {
+  const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
 
@@ -112,20 +131,18 @@ export default function Timer() {
 
   return (
     <div className="flex flex-col items-center min-w-72">
-      <h1
-        className="text-2xl text-white border-1 w-16 py-1 rounded-3xl self-end mb-4 text-center"
-      >
+      <h1 className="text-2xl text-white border-1 w-16 py-1 rounded-3xl self-end mb-4 text-center">
         {currentRound}/{timerConfig.numberOfRounds}
       </h1>
       <h1 className="text-4xl mb-2 font-medium font-mono">
         {timerStateTitles[timerState]}
       </h1>
-      <h1 className="mb-4 text-8xl font-medium font-mono">{formatTime()}</h1>
+      <h1 className="mb-4 text-8xl font-medium font-mono">
+        {formatTime(time)}
+      </h1>
       <div className="flex gap-4">
         <button
-          onClick={() => {
-            setIsRunning(!isRunning);
-          }}
+          onClick={toggleTimer}
           className="bg-white text-black w-20 py-2 rounded-3xl transition ease-in-out hover:text-white hover:bg-transparent hover:border-white border-1"
         >
           {!isRunning ? "Start" : "Stop"}
