@@ -62,13 +62,18 @@ export default function SettingsModal({
   }, [timerVolume, timerConfig, timerSound, isOpen]);
 
   return (
-    <Modal isOpen={isOpen} onClose={handleClose} className="bg-black/50">
-      <ModalContent>
+    <Modal
+      isOpen={isOpen}
+      onClose={handleClose}
+      className="bg-black/50"
+      scrollBehavior="outside"
+    >
+      <ModalContent className="items-unset justify-">
         <ModalHeader>Settings</ModalHeader>
         <form onSubmit={handleSettingsSubmit}>
           <ModalBody>
             <Divider className="bg-gray-500" />
-            <ModalHeader >Timer Settings</ModalHeader>
+            <ModalHeader>Timer Settings</ModalHeader>
             <Slider
               size="sm"
               label="Focus Time"
