@@ -30,6 +30,11 @@ interface BackgroundImagesState {
   backgroundImages: BackgroundImage[];
 }
 
+interface HydrateState {
+  _hasHydrated: boolean;
+  setHasHydrated: (hasHydrated: boolean) => void;
+}
+
 export const useTimerConfigStore = create<TimerConfigState>()(
   persist(
     (set) => ({
@@ -125,3 +130,20 @@ export const useBackgroundImagesStore = create<BackgroundImagesState>(() => ({
     },
   ],
 }));
+
+export const useHydrateStore = create<HydrateState>()(
+  persist(
+    (set) => ({
+      _hasHydrated: false,
+      setHasHydrated: (hasHydrated: boolean) => {
+        set({ _hasHydrated: hasHydrated });
+      },
+    }),
+    {
+      name: "hydrate",
+      onRehydrateStorage: (state) => {
+        state.setHasHydrated(true);
+      },
+    }
+  )
+);

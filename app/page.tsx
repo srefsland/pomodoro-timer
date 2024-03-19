@@ -6,7 +6,7 @@ import { IoLogoGithub } from "react-icons/io5";
 import SettingsModal from "./_components/modal/settings-modal";
 import SettingsBar from "./_components/settings-bar";
 import Timer from "./_components/timer/timer";
-import { useBackgroundImageStore } from "./_store";
+import { useBackgroundImageStore, useHydrateStore } from "./_store";
 import forest from "/public/forest.png";
 import sunset from "/public/sunset.jpg";
 
@@ -21,19 +21,22 @@ export default function Home() {
   const backgroundImage = useBackgroundImageStore(
     (state) => state.backgroundImage
   );
+  const hasHydrated = useHydrateStore((state) => state._hasHydrated);
 
   return (
     <>
       <div className="relative h-screen w-full flex items-center justify-center">
         <SettingsBar onSettingsClick={onOpen} />
-        <Image
-          src={imageImports[backgroundImage.file]}
-          alt="forest"
-          fill
-          sizes="100vw"
-          placeholder="blur"
-          className="-z-10 object-cover"
-        />
+        {hasHydrated && (
+          <Image
+            src={imageImports[backgroundImage.file]}
+            alt="forest"
+            fill
+            sizes="100vw"
+            placeholder="blur"
+            className="-z-10 object-cover"
+          />
+        )}
         <Timer />
         <a
           href={REPO_URL}
