@@ -39,12 +39,12 @@ export default function SettingsBar({
         <DropdownMenu>
           {backgroundImages.map((image) => (
             <DropdownItem
-              key={image.name}
+              key={image}
               onClick={() => {
                 setSelectedBackground(image);
               }}
             >
-              {image.label}
+              {image}
             </DropdownItem>
           ))}
         </DropdownMenu>

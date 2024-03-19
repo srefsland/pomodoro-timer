@@ -7,13 +7,13 @@ import SettingsModal from "./_components/modal/settings-modal";
 import SettingsBar from "./_components/settings-bar";
 import Timer from "./_components/timer/timer";
 import { useBackgroundImageStore, useHydrateStore } from "./_store";
-import forest from "/public/forest.png";
-import sunset from "/public/sunset.jpg";
+import darkForest from "/public/img/darkforest.png";
+import mountainousSunset from "/public/img/mountainsunset.jpg";
 
 const REPO_URL = "https://github.com/simenrefsland/pomodoro-timer";
 const imageImports: { [key: string]: StaticImageData } = {
-  "/public/forest.png": forest,
-  "/public/sunset.jpg": sunset,
+  "Dark Forest": darkForest,
+  "Mountainous Sunset": mountainousSunset,
 };
 
 export default function Home() {
@@ -29,7 +29,7 @@ export default function Home() {
         <SettingsBar onSettingsClick={onOpen} />
         {hasHydrated && (
           <Image
-            src={imageImports[backgroundImage.file]}
+            src={imageImports[backgroundImage] || darkForest}
             alt="forest"
             fill
             sizes="100vw"

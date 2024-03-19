@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { BackgroundImage, TimerConfig, TimerSound } from "./_types";
+import { TimerConfig, TimerSound } from "./_types";
 
 interface TimerConfigState {
   timerConfig: TimerConfig;
@@ -22,12 +22,12 @@ interface TimerSoundsState {
 }
 
 interface BackgroundImageState {
-  backgroundImage: BackgroundImage;
-  setBackgroundImage: (backgroundImage: BackgroundImage) => void;
+  backgroundImage: string;
+  setBackgroundImage: (backgroundImage: string) => void;
 }
 
 interface BackgroundImagesState {
-  backgroundImages: BackgroundImage[];
+  backgroundImages: string[];
 }
 
 interface HydrateState {
@@ -101,12 +101,8 @@ export const useTimerSoundsStore = create<TimerSoundsState>(() => ({
 export const useBackgroundImageStore = create<BackgroundImageState>()(
   persist(
     (set) => ({
-      backgroundImage: {
-        name: "forest",
-        file: "/public/forest.png",
-        label: "Forest",
-      },
-      setBackgroundImage: (backgroundImage: BackgroundImage) => {
+      backgroundImage: "Dark Forest",
+      setBackgroundImage: (backgroundImage: string) => {
         set({ backgroundImage });
       },
     }),
@@ -117,18 +113,7 @@ export const useBackgroundImageStore = create<BackgroundImageState>()(
 );
 
 export const useBackgroundImagesStore = create<BackgroundImagesState>(() => ({
-  backgroundImages: [
-    {
-      name: "forest",
-      file: "/public/forest.png",
-      label: "Forest",
-    },
-    {
-      name: "sunset",
-      file: "/public/sunset.jpg",
-      label: "Sunset",
-    },
-  ],
+  backgroundImages: ["Dark Forest", "Mountainous Sunset"],
 }));
 
 export const useHydrateStore = create<HydrateState>()(
