@@ -1,24 +1,33 @@
 "use client";
 
 import { useDisclosure } from "@nextui-org/react";
-import Image from "next/image";
+import Image, { StaticImageData } from "next/image";
 import { IoLogoGithub } from "react-icons/io5";
 import SettingsModal from "./_components/modal/settings-modal";
 import SettingsBar from "./_components/settings-bar";
 import Timer from "./_components/timer/timer";
+import { useBackgroundImageStore } from "./_store";
 import forest from "/public/forest.png";
+import sunset from "/public/sunset.jpg";
 
 const REPO_URL = "https://github.com/simenrefsland/pomodoro-timer";
+const imageImports: { [key: string]: StaticImageData } = {
+  "/public/forest.png": forest,
+  "/public/sunset.jpg": sunset,
+};
 
 export default function Home() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const backgroundImage = useBackgroundImageStore(
+    (state) => state.backgroundImage
+  );
 
   return (
     <>
       <div className="relative h-screen w-full flex items-center justify-center">
         <SettingsBar onSettingsClick={onOpen} />
         <Image
-          src={forest}
+          src={imageImports[backgroundImage.file]}
           alt="forest"
           fill
           sizes="100vw"

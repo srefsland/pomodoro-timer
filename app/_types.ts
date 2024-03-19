@@ -12,3 +12,9 @@ export type TimerSound = {
   file: string;
   label: string;
 };
+
+export type BackgroundImage = {
+  name: string;
+  file: string;
+  label: string;
+};

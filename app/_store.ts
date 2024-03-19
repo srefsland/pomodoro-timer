@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { TimerConfig, TimerSound } from "./_types";
+import { BackgroundImage, TimerConfig, TimerSound } from "./_types";
 
 interface TimerConfigState {
   timerConfig: TimerConfig;
@@ -19,6 +19,15 @@ interface TimerSoundState {
 
 interface TimerSoundsState {
   sounds: TimerSound[];
+}
+
+interface BackgroundImageState {
+  backgroundImage: BackgroundImage;
+  setBackgroundImage: (backgroundImage: BackgroundImage) => void;
+}
+
+interface BackgroundImagesState {
+  backgroundImages: BackgroundImage[];
 }
 
 export const useTimerConfigStore = create<TimerConfigState>()(
@@ -80,6 +89,39 @@ export const useTimerSoundsStore = create<TimerSoundsState>(() => ({
       name: "Kitchen",
       file: "/kitchen_timer.mp3",
       label: "Kitchen Timer",
+    },
+  ],
+}));
+
+export const useBackgroundImageStore = create<BackgroundImageState>()(
+  persist(
+    (set) => ({
+      backgroundImage: {
+        name: "forest",
+        file: "/public/forest.png",
+        label: "Forest",
+      },
+      setBackgroundImage: (backgroundImage: BackgroundImage) => {
+        set({ backgroundImage });
+      },
+    }),
+    {
+      name: "background-image",
+    }
+  )
+);
+
+export const useBackgroundImagesStore = create<BackgroundImagesState>(() => ({
+  backgroundImages: [
+    {
+      name: "forest",
+      file: "/public/forest.png",
+      label: "Forest",
+    },
+    {
+      name: "sunset",
+      file: "/public/sunset.jpg",
+      label: "Sunset",
     },
   ],
 }));

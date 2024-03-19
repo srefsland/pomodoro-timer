@@ -6,7 +6,12 @@ import {
   useTimerVolumeStore,
 } from "@/app/_store";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { IoPlaySkipForwardOutline, IoReload } from "react-icons/io5";
+import {
+  IoPause,
+  IoPlay,
+  IoPlaySkipForwardOutline,
+  IoReload,
+} from "react-icons/io5";
 
 type TimerState = "work" | "shortBreak" | "longBreak";
 
@@ -141,11 +146,12 @@ export default function Timer() {
         {formatTime(time)}
       </h1>
       <div className="flex gap-4">
-        <button
-          onClick={toggleTimer}
-          className="bg-white text-black w-20 py-2 rounded-3xl transition ease-in-out hover:text-white hover:bg-transparent hover:border-white border-1"
-        >
-          {!isRunning ? "Start" : "Stop"}
+        <button onClick={toggleTimer}>
+          {!isRunning ? (
+            <IoPlay className="size-8 font-bold" />
+          ) : (
+            <IoPause className="size-8 font-bold" />
+          )}
         </button>
         <button onClick={reset}>
           <IoReload className="size-8 font-bold" />
