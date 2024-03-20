@@ -95,6 +95,11 @@ export const useTimerSoundsStore = create<TimerSoundsState>(() => ({
       file: "/kitchen_timer.mp3",
       label: "Kitchen Timer",
     },
+    {
+      name: "LevelUp",
+      file: "/level_up.mp3",
+      label: "Level Up",
+    },
   ],
 }));
 

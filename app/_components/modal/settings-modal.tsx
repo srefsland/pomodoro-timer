@@ -53,6 +53,7 @@ export default function SettingsModal({
     e.preventDefault();
     setTimerConfig(timerConfigForm);
     setTimerVolume(timerVolumeForm);
+    console.log(timerSoundForm);
     setTimerSound(timerSoundForm);
     handleClose();
   };
@@ -73,7 +74,7 @@ export default function SettingsModal({
 
   useEffect(() => {
     audioRef.current = new Audio();
-  }, [])
+  }, []);
 
   return (
     <Modal
@@ -184,7 +185,10 @@ export default function SettingsModal({
                 <SelectItem
                   key={sound.name}
                   value={sound.name}
-                  onClick={() => playSound(sound)}
+                  onClick={() => {
+                    setTimerSoundForm(sound);
+                    playSound(sound);
+                  }}
                 >
                   {sound.label}
                 </SelectItem>

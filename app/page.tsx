@@ -10,7 +10,7 @@ import { useBackgroundImageStore, useHydrateStore } from "./_store";
 import darkForest from "/public/img/darkforest.png";
 import mountainousSunset from "/public/img/mountainsunset.jpg";
 
-const REPO_URL = "https://github.com/simenrefsland/pomodoro-timer";
+const REPO_URL = "https://github.com/srefsland/pomodoro-timer";
 const imageImports: { [key: string]: StaticImageData } = {
   "Dark Forest": darkForest,
   "Mountainous Sunset": mountainousSunset,
