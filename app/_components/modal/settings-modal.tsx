@@ -4,7 +4,7 @@ import {
   useTimerSoundsStore,
   useTimerVolumeStore,
 } from "@/app/_store";
-import { TimerConfig } from "@/app/_types";
+import { TimerConfig, TimerSound } from "@/app/_types";
 import {
   Divider,
   Modal,
@@ -17,7 +17,7 @@ import {
   Slider,
   Switch,
 } from "@nextui-org/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type SettingsModalProps = {
   isOpen: boolean;
@@ -47,12 +47,22 @@ export default function SettingsModal({
   const [timerVolumeForm, setTimerVolumeForm] = useState(timerVolume);
   const [timerSoundForm, setTimerSoundForm] = useState(timerSound);
 
+  const audioRef = useRef<HTMLAudioElement>(new Audio());
+
   const handleSettingsSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setTimerConfig(timerConfigForm);
     setTimerVolume(timerVolumeForm);
     setTimerSound(timerSoundForm);
     handleClose();
+  };
+
+  const playSound = (sound: TimerSound) => {
+    if (audioRef.current) {
+      audioRef.current.src = sound.file;
+      audioRef.current.volume = timerVolumeForm / 100;
+      audioRef.current.play();
+    }
   };
 
   useEffect(() => {
@@ -170,7 +180,7 @@ export default function SettingsModal({
                 <SelectItem
                   key={sound.name}
                   value={sound.name}
-                  onClick={() => setTimerSoundForm(sound)}
+                  onClick={() => playSound(sound)}
                 >
                   {sound.label}
                 </SelectItem>
