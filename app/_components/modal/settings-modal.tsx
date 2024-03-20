@@ -47,7 +47,7 @@ export default function SettingsModal({
   const [timerVolumeForm, setTimerVolumeForm] = useState(timerVolume);
   const [timerSoundForm, setTimerSoundForm] = useState(timerSound);
 
-  const audioRef = useRef<HTMLAudioElement>(new Audio());
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const handleSettingsSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -70,6 +70,10 @@ export default function SettingsModal({
     setTimerVolumeForm(timerVolume);
     setTimerSoundForm(timerSound);
   }, [timerVolume, timerConfig, timerSound, isOpen]);
+
+  useEffect(() => {
+    audioRef.current = new Audio();
+  }, [])
 
   return (
     <Modal
