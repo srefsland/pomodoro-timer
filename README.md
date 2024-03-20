@@ -12,6 +12,10 @@ Very simple pomodoro timer aimed for simplicity and productivity. Built using Ne
 - **⚙️ Customizable Timer**: Adjust the work, short break and long break duration as well as the number of rounds per iteration.
 - **🏞️ Changeable Background**: Tired of the current background? Pick another one!
 
+## Possible additional features
+- **Tracking pomodoros and reports**
+- **Task list**
+
 ## Installing locally
 
 For those interested in running the Pomodoro Timer locally, first clone the repository:
