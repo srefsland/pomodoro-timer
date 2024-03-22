@@ -9,11 +9,13 @@ import Timer from "./_components/timer/timer";
 import { useBackgroundImageStore, useHydrateStore } from "./_store";
 import darkForest from "/public/img/darkforest.png";
 import mountainousSunset from "/public/img/mountainsunset.jpg";
+import rainstormSummit from "/public/img/rainstormsummit.jpg";
 
 const REPO_URL = "https://github.com/srefsland/pomodoro-timer";
 const imageImports: { [key: string]: StaticImageData } = {
   "Dark Forest": darkForest,
   "Mountainous Sunset": mountainousSunset,
+  "Rainstorm Beneath the Summit": rainstormSummit,
 };
 
 export default function Home() {

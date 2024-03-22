@@ -118,7 +118,11 @@ export const useBackgroundImageStore = create<BackgroundImageState>()(
 );
 
 export const useBackgroundImagesStore = create<BackgroundImagesState>(() => ({
-  backgroundImages: ["Dark Forest", "Mountainous Sunset"],
+  backgroundImages: [
+    "Dark Forest",
+    "Mountainous Sunset",
+    "Rainstorm Beneath the Summit",
+  ],
 }));
 
 export const useHydrateStore = create<HydrateState>()(
