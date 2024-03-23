@@ -7,7 +7,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Pomodoro Timer",
-  description: "Pomodoro timer for productivity",
+  description: `A simple online Pomodoro timer that helps you stay focused and productive. 
+    If offers customizable timer settings and various backgrounds to create a personalized work environment.`,
 };
 
 export default function RootLayout({

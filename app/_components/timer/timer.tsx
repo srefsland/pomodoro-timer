@@ -53,7 +53,8 @@ export default function Timer() {
         const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
         const diff = startSeconds - elapsedTime;
         setTime(startSeconds - elapsedTime);
-
+        
+        // If time is up, progress to next round
         if (diff <= 0) {
           clearInterval(timeInterval);
           progressRound();
