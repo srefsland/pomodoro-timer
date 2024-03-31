@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { defaultTimerConfig } from "./_config";
 import { TimerConfig, TimerSound } from "./_types";
 
 interface TimerConfigState {
@@ -38,14 +39,7 @@ interface HydrateState {
 export const useTimerConfigStore = create<TimerConfigState>()(
   persist(
     (set) => ({
-      timerConfig: {
-        workMinutes: 25,
-        shortBreakMinutes: 5,
-        longBreakMinutes: 15,
-        numberOfRounds: 4,
-        autoStartBreak: true,
-        autoStartWork: true,
-      },
+      timerConfig: defaultTimerConfig,
       setTimerConfig: (timerConfig: TimerConfig) => {
         set({ timerConfig });
       },

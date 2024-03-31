@@ -1,3 +1,4 @@
+import { defaultTimerConfig } from "@/app/_config";
 import {
   useSelectedTimerSoundStore,
   useTimerConfigStore,
@@ -56,6 +57,12 @@ export default function SettingsModal({
     console.log(timerSoundForm);
     setTimerSound(timerSoundForm);
     handleClose();
+  };
+
+  const resetToDefault = () => {
+    setTimerConfigForm(defaultTimerConfig);
+    setTimerSoundForm(timerSounds[0]);
+    setTimerVolumeForm(50);
   };
 
   const playSound = (sound: TimerSound) => {
@@ -205,7 +212,14 @@ export default function SettingsModal({
               onChange={(e) => setTimerVolumeForm(e as number)}
             />
           </ModalBody>
-          <ModalFooter>
+          <ModalFooter className="flex justify-between mb-4">
+            <button 
+              type="button"
+              className="bg-white text-black w-36 p-2 rounded-3xl transition ease-in-out"
+              onClick={resetToDefault}
+            >
+              Default settings
+            </button>
             <button
               type="submit"
               className="bg-white text-black w-24 py-2 rounded-3xl transition ease-in-out"
