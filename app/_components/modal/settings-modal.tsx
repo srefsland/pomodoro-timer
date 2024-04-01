@@ -88,9 +88,9 @@ export default function SettingsModal({
       isOpen={isOpen}
       onClose={handleClose}
       className="bg-black/50"
-      scrollBehavior="outside"
+      placement="center"
     >
-      <ModalContent className="items-unset justify-">
+      <ModalContent>
         <ModalHeader>Settings</ModalHeader>
         <form onSubmit={handleSettingsSubmit}>
           <ModalBody>
@@ -213,7 +213,7 @@ export default function SettingsModal({
             />
           </ModalBody>
           <ModalFooter className="flex justify-between mb-4">
-            <button 
+            <button
               type="button"
               className="bg-white text-black w-36 p-2 rounded-3xl transition ease-in-out"
               onClick={resetToDefault}

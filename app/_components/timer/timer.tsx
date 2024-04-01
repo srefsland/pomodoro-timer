@@ -52,7 +52,7 @@ export default function Timer() {
       } else {
         const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
         const diff = startSeconds - elapsedTime;
-        setTime(startSeconds - elapsedTime);
+        setTime(diff);
         
         // If time is up, progress to next round
         if (diff <= 0) {
