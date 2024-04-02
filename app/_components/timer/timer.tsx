@@ -60,7 +60,7 @@ export default function Timer() {
           progressRound();
         }
       }
-    }, 250);
+    }, 100);
 
     return () => clearInterval(timeInterval);
   });
