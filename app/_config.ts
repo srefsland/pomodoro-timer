@@ -5,6 +5,6 @@ export const defaultTimerConfig: TimerConfig = {
   shortBreakMinutes: 5,
   longBreakMinutes: 15,
   numberOfRounds: 4,
-  autoStartBreak: true,
-  autoStartWork: true,
+  autoStartBreak: false,
+  autoStartWork: false,
 };

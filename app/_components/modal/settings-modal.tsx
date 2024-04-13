@@ -54,7 +54,6 @@ export default function SettingsModal({
     e.preventDefault();
     setTimerConfig(timerConfigForm);
     setTimerVolume(timerVolumeForm);
-    console.log(timerSoundForm);
     setTimerSound(timerSoundForm);
     handleClose();
   };
