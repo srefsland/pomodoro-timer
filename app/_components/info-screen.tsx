@@ -1,7 +1,7 @@
 export default function InfoScreen() {
   return (
     <div className="relative min-h-screen bg-gray-900/65">
-      <div className="flex flex-col justify-start pt-12 mx-auto w-3/4 md:w-1/2">
+      <div className="flex flex-col justify-start pt-12 mx-auto w-3/4 md:w-5/12">
         <h1 className="text-white text-3xl font-bold">
           A simple and intuitive Pomodoro Timer
         </h1>
