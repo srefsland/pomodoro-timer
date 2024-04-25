@@ -2,15 +2,36 @@ import { useDisclosure } from "@nextui-org/react";
 import SettingsBar from "./settings-bar";
 import Timer from "./timer/timer";
 import SettingsModal from "./modal/settings-modal";
+import TaskListModal from "./modal/tasklist-modal";
 
 export default function TimerScreen() {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isOpenSettingsModal,
+    onOpen: onOpenSettingsModal,
+    onOpenChange: onOpenChangeSettingsModal,
+  } = useDisclosure();
+
+  const {
+    isOpen: isOpenTaskListModal,
+    onOpen: onOpenTaskListModal,
+    onOpenChange: onOpenChangeTaskListModal,
+  } = useDisclosure();
 
   return (
     <div className="relative h-screen w-full flex items-center justify-center">
-      <SettingsBar onSettingsClick={onOpen} />
+      <SettingsBar
+        onSettingsClick={onOpenSettingsModal}
+        onTaskListClick={onOpenTaskListModal}
+      />
       <Timer />
-      <SettingsModal isOpen={isOpen} handleClose={onOpenChange} />
+      <SettingsModal
+        isOpen={isOpenSettingsModal}
+        handleClose={onOpenChangeSettingsModal}
+      />
+      <TaskListModal
+        isOpen={isOpenTaskListModal}
+        handleClose={onOpenChangeTaskListModal}
+      />
     </div>
   );
 }

@@ -7,13 +7,15 @@ import {
   DropdownTrigger,
 } from "@nextui-org/react";
 import { IoMdSettings } from "react-icons/io";
-import { IoImagesOutline } from "react-icons/io5";
+import { IoImagesOutline, IoList } from "react-icons/io5";
 import { useBackgroundImageStore, useBackgroundImagesStore } from "../_store";
 
 export default function SettingsBar({
   onSettingsClick,
+  onTaskListClick,
 }: {
   onSettingsClick: () => void;
+  onTaskListClick: () => void;
 }) {
   const backgroundImages = useBackgroundImagesStore(
     (state) => state.backgroundImages
@@ -29,6 +31,12 @@ export default function SettingsBar({
         onClick={onSettingsClick}
       >
         <span>Settings</span> <IoMdSettings />
+      </button>
+      <button
+        className="flex items-center gap-1 border-white border-1 p-2 rounded-3xl transition ease-in-out hover:bg-white hover:text-black"
+        onClick={onTaskListClick}
+      >
+        <span>Task List</span> <IoList />
       </button>
       <Dropdown>
         <DropdownTrigger>

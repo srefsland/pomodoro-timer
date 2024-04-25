@@ -53,7 +53,7 @@ export default function Timer() {
         const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
         const diff = startSeconds - elapsedTime;
         setTime(diff);
-        
+
         // If time is up, progress to next round
         if (diff <= 0) {
           clearInterval(timeInterval);
@@ -161,7 +161,9 @@ export default function Timer() {
           <IoPlaySkipForwardOutline className="size-8" />
         </button>
       </div>
-      {timerSound.file && <audio ref={audioRef} src={timerSound.file} />}
+      {timerSound.file && (
+        <audio ref={audioRef} src={timerSound.file} crossOrigin="anonymous" />
+      )}
     </div>
   );
 }

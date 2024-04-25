@@ -1,3 +1,5 @@
+import { UniqueIdentifier } from "@dnd-kit/core";
+
 export type TimerConfig = {
   workMinutes: number;
   shortBreakMinutes: number;
@@ -11,4 +13,10 @@ export type TimerSound = {
   name: string;
   file: string;
   label: string;
+};
+
+export type Task = {
+  id: UniqueIdentifier;
+  task: string;
+  done: boolean;
 };

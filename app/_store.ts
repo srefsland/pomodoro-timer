@@ -1,7 +1,9 @@
+import { UniqueIdentifier } from "@dnd-kit/core";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { defaultTimerConfig } from "./_config";
-import { TimerConfig, TimerSound } from "./_types";
+import { Task, TimerConfig, TimerSound } from "./_types";
+import { v4 as uuidv4 } from "uuid";
 
 interface TimerConfigState {
   timerConfig: TimerConfig;
@@ -35,6 +37,49 @@ interface HydrateState {
   _hasHydrated: boolean;
   setHasHydrated: (hasHydrated: boolean) => void;
 }
+
+interface TaskListState {
+  tasks: Task[];
+  addTask: (task: string) => void;
+  removeTask: (id: UniqueIdentifier) => void;
+  toggleTaskProgress: (id: UniqueIdentifier) => void;
+  reorderTasks: (currentTasks: Task[], doneTasks: Task[]) => void;
+}
+
+export const useTaskListStore = create<TaskListState>()(
+  persist(
+    (set, get) => ({
+      tasks: [],
+      addTask: (task: string) => {
+        const { tasks } = get();
+        const newTask = {
+          id: uuidv4(),
+          task: task,
+          done: false,
+        };
+        set({ tasks: [...tasks, newTask] });
+      },
+      removeTask: (id: UniqueIdentifier) => {
+        const { tasks } = get();
+        set({ tasks: tasks.filter((task) => task.id !== id) });
+      },
+      toggleTaskProgress: (id: UniqueIdentifier) => {
+        const { tasks } = get();
+        set({
+          tasks: tasks.map((task) =>
+            task.id === id ? { ...task, done: !task.done } : task
+          ),
+        });
+      },
+      reorderTasks: (currentTasks: Task[], doneTasks: Task[]) => {
+        set({ tasks: [...currentTasks, ...doneTasks] });
+      },
+    }),
+    {
+      name: "task-list",
+    }
+  )
+);
 
 export const useTimerConfigStore = create<TimerConfigState>()(
   persist(
