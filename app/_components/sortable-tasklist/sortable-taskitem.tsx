@@ -72,7 +72,7 @@ export function SortableTaskItem({
   return (
     <SortableItemContext.Provider value={context}>
       <li
-        className="list-none flex justify-between items-center mb-2 w-full"
+        className="list-none flex justify-between items-center px-2.5 py-3.5 mb-2 w-full rounded-3xl bg-default-100/50"
         ref={setNodeRef}
         style={style}
       >

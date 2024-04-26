@@ -103,7 +103,7 @@ export default function TaskListModal({
             </button>
           </form>
           <div
-            className={`flex-1 my-4 w-full overflow-auto rounded-3xl bg-default-100/50 px-4`}
+            className={`flex-1 my-4 w-full overflow-auto px-4`}
           >
             {currentTasks.length === 0 && doneTasks.length === 0 && (
               <h1 className="text-center mt-2">No tasks to display!</h1>
