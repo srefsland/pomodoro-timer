@@ -39,7 +39,6 @@ export default function TaskListModal({
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const submitNewTask = () => {
-    // If empty, do nothing
     if (!newTaskForm) return;
 
     addTask(newTaskForm);
@@ -67,14 +66,14 @@ export default function TaskListModal({
     <Modal
       isOpen={isOpen}
       onClose={handleClose}
-      className="bg-black/50"
+      className="bg-black/50 h-3/4"
       placement="center"
     >
       <ModalContent>
-        <ModalHeader>Task List</ModalHeader>
+        <ModalHeader>Tasks</ModalHeader>
         <Divider className="bg-gray-500" />
-        <ModalHeader>Add task list item</ModalHeader>
-        <div className="m-4 mt-0">
+        <ModalHeader>Add task</ModalHeader>
+        <div className="flex flex-col h-3/4 overflow-hidden m-3 mt-0">
           <form
             className="flex gap-2"
             onSubmit={(e) => {
@@ -83,7 +82,7 @@ export default function TaskListModal({
             }}
           >
             <Input
-              placeholder="Enter a new task"
+              placeholder="Add a new task"
               onChange={(e) => {
                 setNewTaskForm(e.target.value);
               }}
@@ -103,45 +102,49 @@ export default function TaskListModal({
               Add
             </button>
           </form>
-          {currentTasks.length === 0 && doneTasks.length === 0 && (
-            <h1 className="mt-4 text-center">No current tasks!</h1>
-          )}
-          {currentTasks.length > 0 && (
-            <SortableList
-              items={currentTasks}
-              onChange={handleChangeCurrentTasks}
-              renderItem={(item) => (
-                <div className="flex">
-                  <SortableList.Item
-                    id={item.id}
-                    removeTask={removeTask}
-                    changeTaskStatus={toggleTaskProgress}
-                    isDone={false}
-                  >
-                    {item.task}
-                  </SortableList.Item>
-                </div>
-              )}
-            />
-          )}
-          {doneTasks.length > 0 && (
-            <SortableList
-              items={doneTasks}
-              onChange={handleChangeDoneTasks}
-              renderItem={(item) => (
-                <div className="flex">
-                  <SortableList.Item
-                    id={item.id}
-                    removeTask={removeTask}
-                    changeTaskStatus={toggleTaskProgress}
-                    isDone={true}
-                  >
-                    {item.task}
-                  </SortableList.Item>
-                </div>
-              )}
-            />
-          )}
+          <div
+            className={`flex-1 my-4 w-full overflow-auto rounded-3xl bg-default-100/50 px-4`}
+          >
+            {currentTasks.length === 0 && doneTasks.length === 0 && (
+              <h1 className="text-center mt-2">No tasks to display!</h1>
+            )}
+            {currentTasks.length > 0 && (
+              <SortableList
+                items={currentTasks}
+                onChange={handleChangeCurrentTasks}
+                renderItem={(item) => (
+                  <div className="flex">
+                    <SortableList.Item
+                      id={item.id}
+                      removeTask={removeTask}
+                      changeTaskStatus={toggleTaskProgress}
+                      isDone={false}
+                    >
+                      {item.task}
+                    </SortableList.Item>
+                  </div>
+                )}
+              />
+            )}
+            {doneTasks.length > 0 && (
+              <SortableList
+                items={doneTasks}
+                onChange={handleChangeDoneTasks}
+                renderItem={(item) => (
+                  <div className="flex">
+                    <SortableList.Item
+                      id={item.id}
+                      removeTask={removeTask}
+                      changeTaskStatus={toggleTaskProgress}
+                      isDone={true}
+                    >
+                      {item.task}
+                    </SortableList.Item>
+                  </div>
+                )}
+              />
+            )}
+          </div>
         </div>
       </ModalContent>
     </Modal>
