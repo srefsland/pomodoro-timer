@@ -64,7 +64,7 @@ export default function SortableList<T extends BaseItem>({
       }}
     >
       <SortableContext items={items}>
-        <ul className="flex flex-col gap-2 mt-4" role="application">
+        <ul className="flex flex-col gap-2" role="application">
           {items.map((item) => (
             <React.Fragment key={item.id}>{renderItem(item)}</React.Fragment>
           ))}

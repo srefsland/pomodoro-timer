@@ -1,6 +1,8 @@
 import { useTaskListStore } from "@/app/_store";
 import { Task } from "@/app/_types";
 import {
+  Accordion,
+  AccordionItem,
   Divider,
   Input,
   Modal,
@@ -102,48 +104,55 @@ export default function TaskListModal({
               Add
             </button>
           </form>
-          <div
-            className={`flex-1 my-4 w-full overflow-auto px-4`}
-          >
-            {currentTasks.length === 0 && doneTasks.length === 0 && (
-              <h1 className="text-center mt-2">No tasks to display!</h1>
-            )}
-            {currentTasks.length > 0 && (
-              <SortableList
-                items={currentTasks}
-                onChange={handleChangeCurrentTasks}
-                renderItem={(item) => (
-                  <div className="flex">
-                    <SortableList.Item
-                      id={item.id}
-                      removeTask={removeTask}
-                      changeTaskStatus={toggleTaskProgress}
-                      isDone={false}
-                    >
-                      {item.task}
-                    </SortableList.Item>
-                  </div>
+          <div className={`flex-1 mt-4 w-full overflow-auto px-4`}>
+            <Accordion selectionMode="multiple" defaultExpandedKeys={["1"]}>
+              <AccordionItem key={"1"} title="Tasks in progress">
+                {currentTasks.length === 0 && (
+                  <h1 className="text-center mb-2">No tasks in progress</h1>
                 )}
-              />
-            )}
-            {doneTasks.length > 0 && (
-              <SortableList
-                items={doneTasks}
-                onChange={handleChangeDoneTasks}
-                renderItem={(item) => (
-                  <div className="flex">
-                    <SortableList.Item
-                      id={item.id}
-                      removeTask={removeTask}
-                      changeTaskStatus={toggleTaskProgress}
-                      isDone={true}
-                    >
-                      {item.task}
-                    </SortableList.Item>
-                  </div>
+                {currentTasks.length > 0 && (
+                  <SortableList
+                    items={currentTasks}
+                    onChange={handleChangeCurrentTasks}
+                    renderItem={(item) => (
+                      <div className="flex">
+                        <SortableList.Item
+                          id={item.id}
+                          removeTask={removeTask}
+                          changeTaskStatus={toggleTaskProgress}
+                          isDone={false}
+                        >
+                          {item.task}
+                        </SortableList.Item>
+                      </div>
+                    )}
+                  />
                 )}
-              />
-            )}
+              </AccordionItem>
+              <AccordionItem key={"2"} title="Tasks done">
+                {doneTasks.length === 0 && (
+                  <h1 className="text-center">No tasks completed</h1>
+                )}
+                {doneTasks.length > 0 && (
+                  <SortableList
+                    items={doneTasks}
+                    onChange={handleChangeDoneTasks}
+                    renderItem={(item) => (
+                      <div className="flex">
+                        <SortableList.Item
+                          id={item.id}
+                          removeTask={removeTask}
+                          changeTaskStatus={toggleTaskProgress}
+                          isDone={true}
+                        >
+                          {item.task}
+                        </SortableList.Item>
+                      </div>
+                    )}
+                  />
+                )}
+              </AccordionItem>
+            </Accordion>
           </div>
         </div>
       </ModalContent>
