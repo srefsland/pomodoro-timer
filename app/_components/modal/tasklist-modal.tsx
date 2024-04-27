@@ -68,14 +68,13 @@ export default function TaskListModal({
     <Modal
       isOpen={isOpen}
       onClose={handleClose}
-      className="bg-black/50 h-3/4"
+      className="bg-black/50 h-5/6"
       placement="center"
     >
       <ModalContent>
         <ModalHeader>Tasks</ModalHeader>
         <Divider className="bg-gray-500" />
-        <ModalHeader>Add task</ModalHeader>
-        <div className="flex flex-col h-3/4 overflow-hidden m-3 mt-0">
+        <div className="flex flex-col h-5/6 overflow-hidden m-3 mt-6">
           <form
             className="flex gap-2"
             onSubmit={(e) => {
@@ -104,7 +103,7 @@ export default function TaskListModal({
               Add
             </button>
           </form>
-          <div className={`flex-1 mt-4 w-full overflow-auto px-4`}>
+          <div className={`flex-1 mt-4 w-full overflow-auto`}>
             <Accordion selectionMode="multiple" defaultExpandedKeys={["1"]}>
               <AccordionItem key={"1"} title="Tasks in progress">
                 {currentTasks.length === 0 && (
