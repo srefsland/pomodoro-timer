@@ -186,6 +186,7 @@ export default function SettingsModal({
               className="mb-4"
               disallowEmptySelection
               defaultSelectedKeys={[timerSoundForm.name]}
+              aria-label="Select a sound for the timer"
             >
               {timerSounds.map((sound) => (
                 <SelectItem

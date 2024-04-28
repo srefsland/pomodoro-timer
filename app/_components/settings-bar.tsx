@@ -44,7 +44,7 @@ export default function SettingsBar({
             <span>Select Background</span> <IoImagesOutline className="mr-1" />
           </button>
         </DropdownTrigger>
-        <DropdownMenu>
+        <DropdownMenu aria-label="Select different backgrounds">
           {backgroundImages.map((image) => (
             <DropdownItem
               key={image}

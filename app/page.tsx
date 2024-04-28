@@ -25,16 +25,18 @@ export default function Home() {
 
   return (
     <div className="snap-y snap-mandatory overflow-y-scroll h-screen w-screen">
-      {hasHydrated && (
-        <Image
-          src={imageImports[backgroundImage] || darkForest}
-          alt="forest"
-          fill
-          sizes="100vw"
-          placeholder="blur"
-          className="-z-10 object-cover"
-        />
-      )}
+      <div className="fixed w-full h-full">
+        {hasHydrated && (
+          <Image
+            src={imageImports[backgroundImage] || darkForest}
+            alt="forest"
+            fill
+            sizes="100vw"
+            placeholder="blur"
+            className="-z-10 object-cover"
+          />
+        )}
+      </div>
       <div className="snap-start">
         <TimerScreen />
       </div>
