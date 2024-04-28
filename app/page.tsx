@@ -24,32 +24,34 @@ export default function Home() {
   const hasHydrated = useHydrateStore((state) => state._hasHydrated);
 
   return (
-    <div className="snap-y snap-mandatory overflow-y-scroll h-screen w-screen">
-      <div className="fixed w-full h-full">
-        {hasHydrated && (
-          <Image
-            src={imageImports[backgroundImage] || darkForest}
-            alt="forest"
-            fill
-            sizes="100vw"
-            placeholder="blur"
-            className="-z-10 object-cover"
-          />
-        )}
+    <>
+      <div className="snap-y snap-mandatory overflow-y-scroll h-screen w-screen">
+        <div className="absolute w-full h-full">
+          {hasHydrated && (
+            <Image
+              src={imageImports[backgroundImage] || darkForest}
+              alt="forest"
+              fill
+              sizes="100vw"
+              placeholder="blur"
+              className="-z-10 object-cover"
+            />
+          )}
+        </div>
+        <div className="snap-start">
+          <TimerScreen />
+        </div>
+        <div className="snap-start">
+          <InfoScreen />
+        </div>
+        <a
+          href={REPO_URL}
+          target="_blank"
+          className="fixed bottom-4 right-4 bg-black/85 hover:bg-white/85 hover:text-black text-white p-2 rounded-md transition ease-in-out"
+        >
+          <IoLogoGithub className="inline size-6" />
+        </a>
       </div>
-      <div className="snap-start">
-        <TimerScreen />
-      </div>
-      <div className="snap-start">
-        <InfoScreen />
-      </div>
-      <a
-        href={REPO_URL}
-        target="_blank"
-        className="fixed bottom-4 right-4 bg-black/85 hover:bg-white/85 hover:text-black text-white p-2 rounded-md transition ease-in-out"
-      >
-        <IoLogoGithub className="inline size-6" />
-      </a>
-    </div>
+    </>
   );
 }

@@ -10,22 +10,22 @@ export default function InfoScreen() {
         </h2>
         <p className="mt-4">
           A pomodoro timer is a technique that is used to improve productivity
-          and time managment originally developed by{" "}
+          and time managment originally developed by
           <a
             href="https://en.wikipedia.org/wiki/Pomodoro_Technique"
             target="_blank"
             className="font-bold"
           >
             Fransesco Cirillo
-          </a>{" "}
+          </a>
           in the 1980s. The word pomodoro is Italian for tomato, refers to the
           tomato-shaped kitchen timer that Cirillo used as a university student.
         </p>
         <p className="mt-4">
           The original method used 25 minute work intervals, separated by 5
           minute breaks, and eventually a longer break of 20-30 minutes after 4
-          work intervals. The technique can however be adjusted to suit any
-          work style.
+          work intervals. The technique can however be adjusted to suit any work
+          style.
         </p>
         <h2 className="text-white text-2xl mt-4 font-semibold">
           Using and configuring the timer

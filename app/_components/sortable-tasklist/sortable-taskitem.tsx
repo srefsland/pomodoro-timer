@@ -76,10 +76,7 @@ export function SortableTaskItem({
         ref={setNodeRef}
         style={style}
       >
-        <Checkbox
-          isSelected={isDone}
-          onChange={() => changeTaskStatus(id)}
-        >
+        <Checkbox isSelected={isDone} onChange={() => changeTaskStatus(id)}>
           <h1 className={`text-lg ${doneStyle}`}>{children}</h1>
         </Checkbox>
         <div className="flex gap-2">
