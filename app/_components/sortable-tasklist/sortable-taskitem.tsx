@@ -67,7 +67,7 @@ export function SortableTaskItem({
     removeTask(id);
   };
 
-  const doneStyle = isDone ? "text-gray-500" : "";
+  const doneStyle = isDone ? "text-gray-500 line-through" : "";
 
   return (
     <SortableItemContext.Provider value={context}>
@@ -78,7 +78,6 @@ export function SortableTaskItem({
       >
         <Checkbox
           isSelected={isDone}
-          lineThrough={isDone}
           onChange={() => changeTaskStatus(id)}
         >
           <h1 className={`text-lg ${doneStyle}`}>{children}</h1>
