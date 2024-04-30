@@ -147,17 +147,17 @@ export default function Timer() {
         {formatTime(time)}
       </h1>
       <div className="flex gap-4">
-        <button onClick={toggleTimer}>
+        <button onClick={toggleTimer} aria-label="Play/pause">
           {!isRunning ? (
             <IoPlay className="size-8 font-bold" />
           ) : (
             <IoPause className="size-8 font-bold" />
           )}
         </button>
-        <button onClick={reset}>
+        <button onClick={reset} aria-label="Reset">
           <IoReload className="size-8 font-bold" />
         </button>
-        <button onClick={progressRound}>
+        <button onClick={progressRound} aria-label="Reset">
           <IoPlaySkipForwardOutline className="size-8" />
         </button>
       </div>
