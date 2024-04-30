@@ -104,7 +104,10 @@ export default function TaskListModal({
             </button>
           </form>
           <div className={`flex-1 mt-2 w-full overflow-auto`}>
-            <Accordion selectionMode="multiple" defaultExpandedKeys={["1"]}>
+            <Accordion
+              selectionMode="multiple"
+              defaultExpandedKeys={["1", "2"]}
+            >
               <AccordionItem key={"1"} title="Tasks in progress">
                 {currentTasks.length === 0 && (
                   <h1 className="text-center mb-2">No tasks in progress</h1>
