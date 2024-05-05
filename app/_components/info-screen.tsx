@@ -10,14 +10,14 @@ export default function InfoScreen() {
         </h2>
         <p className="mt-4">
           A pomodoro timer is a technique that is used to improve productivity
-          and time managment originally developed by
+          and time managment originally developed by{" "}
           <a
             href="https://en.wikipedia.org/wiki/Pomodoro_Technique"
             target="_blank"
             className="font-bold"
           >
-            Fransesco Cirillo
-          </a>
+            Francesco Cirillo
+          </a>{" "}
           in the 1980s. The word pomodoro is Italian for tomato, refers to the
           tomato-shaped kitchen timer that Cirillo used as a university student.
         </p>
