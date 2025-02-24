@@ -5,7 +5,7 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { IoMdSettings } from "react-icons/io";
 import { IoImagesOutline, IoList } from "react-icons/io5";
 import { useBackgroundImageStore, useBackgroundImagesStore } from "../_store";
@@ -48,7 +48,7 @@ export default function SettingsBar({
           {backgroundImages.map((image) => (
             <DropdownItem
               key={image}
-              onClick={() => {
+              onPress={() => {
                 setSelectedBackground(image);
               }}
             >

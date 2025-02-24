@@ -6,7 +6,7 @@ import type {
 } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { Checkbox } from "@nextui-org/react";
+import { Checkbox } from "@heroui/react";
 import type { CSSProperties, PropsWithChildren } from "react";
 import { createContext, useMemo } from "react";
 import { IoCloseSharp } from "react-icons/io5";

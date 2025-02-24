@@ -1,4 +1,4 @@
-import { useDisclosure } from "@nextui-org/react";
+import { useDisclosure } from "@heroui/react";
 import SettingsBar from "./settings-bar";
 import Timer from "./timer/timer";
 import SettingsModal from "./modal/settings-modal";

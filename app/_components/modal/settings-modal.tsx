@@ -17,7 +17,7 @@ import {
   SelectItem,
   Slider,
   Switch,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { useEffect, useRef, useState } from "react";
 
 type SettingsModalProps = {

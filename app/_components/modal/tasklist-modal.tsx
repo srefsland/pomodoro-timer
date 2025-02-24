@@ -8,7 +8,7 @@ import {
   Modal,
   ModalContent,
   ModalHeader,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import React, { useEffect, useState } from "react";
 import SortableList from "../sortable-tasklist/sortable-list";
 
