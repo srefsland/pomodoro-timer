@@ -191,8 +191,8 @@ export default function SettingsModal({
               {timerSounds.map((sound) => (
                 <SelectItem
                   key={sound.name}
-                  value={sound.name}
-                  onClick={() => {
+                  title={sound.name}
+                  onPress={() => {
                     setTimerSoundForm(sound);
                     playSound(sound);
                   }}
