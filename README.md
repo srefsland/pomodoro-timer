@@ -4,7 +4,7 @@
 
 ## Overview
 
-Very simple pomodoro timer aimed for simplicity and productivity. Built using Next.js and NextUI. The project is live [here](https://www.pomodorotimer.me/).
+Very simple pomodoro timer aimed for simplicity and productivity. Built using Next.js and HeroUI. The project is live [here](https://www.pomodorotimer.me/).
 
 ## Features 
 - **🖥️ Simple Interface**: A clean and intuitive interface that's easy to use.
