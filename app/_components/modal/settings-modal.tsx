@@ -86,7 +86,7 @@ export default function SettingsModal({
     <Modal
       isOpen={isOpen}
       onClose={handleClose}
-      className="bg-black/50"
+      className="bg-gray-900/50"
       placement="center"
     >
       <ModalContent>

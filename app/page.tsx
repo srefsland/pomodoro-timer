@@ -1,13 +1,13 @@
 "use client";
 
 import Image, { StaticImageData } from "next/image";
+import { IoLogoGithub } from "react-icons/io";
+import InfoScreen from "./_components/info-screen";
+import TimerScreen from "./_components/timer-screen";
 import { useBackgroundImageStore, useHydrateStore } from "./_store";
 import darkForest from "/public/img/darkforest.png";
 import mountainousSunset from "/public/img/mountainsunset.jpg";
 import rainstormSummit from "/public/img/rainstormsummit.jpg";
-import TimerScreen from "./_components/timer-screen";
-import InfoScreen from "./_components/info-screen";
-import { IoLogoGithub } from "react-icons/io";
 
 const imageImports: { [key: string]: StaticImageData } = {
   "Dark Forest": darkForest,

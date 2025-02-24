@@ -68,7 +68,7 @@ export default function TaskListModal({
     <Modal
       isOpen={isOpen}
       onClose={handleClose}
-      className="bg-black/50 h-5/6"
+      className="bg-gray-900/50 h-5/6"
       placement="center"
     >
       <ModalContent>
