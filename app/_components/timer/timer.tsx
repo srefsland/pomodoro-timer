@@ -140,12 +140,10 @@ export default function Timer() {
       <h1 className="text-2xl text-white border-1 w-16 py-1 rounded-3xl self-end mb-4 text-center">
         {currentRound}/{timerConfig.numberOfRounds}
       </h1>
-      <h1 className="text-4xl mb-2 font-medium font-mono">
+      <h1 className="text-4xl mb-2 font-medium">
         {timerStateTitles[timerState]}
       </h1>
-      <h1 className="mb-4 text-8xl font-medium font-mono">
-        {formatTime(time)}
-      </h1>
+      <h1 className="mb-4 text-8xl font-light font-mono tracking-tighter">{formatTime(time)}</h1>
       <div className="flex gap-4">
         <button onClick={toggleTimer} aria-label="Play/pause">
           {!isRunning ? (

@@ -1,9 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Andada_Pro, Azeret_Mono } from "next/font/google";
 import "./globals.css";
 import { Providers } from "./providers";
 
-const inter = Inter({ subsets: ["latin"] });
+const andadaPro = Andada_Pro({ subsets: ["latin"] });
+
+const azeretMono = Azeret_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-azeret-mono",
+});
 
 export const metadata: Metadata = {
   title: "Pomodoro Timer",
@@ -18,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <body className={inter.className}>
+      <body className={`${andadaPro.className} ${azeretMono.variable}`}>
         <Providers>{children}</Providers>
       </body>
     </html>
