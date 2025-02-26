@@ -1,10 +1,12 @@
 "use client";
 
 import {
+  useHydrateStore,
   useSelectedTimerSoundStore,
   useTimerConfigStore,
   useTimerVolumeStore,
 } from "@/app/_store";
+import { delay } from "@/app/_utils";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   IoPause,
@@ -17,17 +19,17 @@ type TimerState = "work" | "shortBreak" | "longBreak";
 
 export default function Timer() {
   const [time, setTime] = useState(0);
-  const [startTime, setStartTime] = useState(0);
-  const [startSeconds, setStartSeconds] = useState(0);
   const [currentRound, setCurrentRound] = useState(1);
   const [isRunning, setIsRunning] = useState(false);
   const [timerState, setTimerState] = useState<TimerState>("work");
 
   const audioRef = useRef<HTMLAudioElement>(null);
+  const workerRef = useRef<Worker | null>(null);
 
   const timerConfig = useTimerConfigStore((state) => state.timerConfig);
   const audioVolume = useTimerVolumeStore((state) => state.audioVolume);
   const timerSound = useSelectedTimerSoundStore((state) => state.timerSound);
+  const hydrated = useHydrateStore((state) => state._hasHydrated);
 
   const timerStateTimes = useMemo(() => {
     return {
@@ -45,35 +47,65 @@ export default function Timer() {
     };
   }, []);
 
-  useEffect(() => {
-    const timeInterval = setInterval(() => {
-      if (!isRunning) {
-        clearInterval(timeInterval);
-      } else {
-        const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
-        const diff = startSeconds - elapsedTime;
-        setTime(diff);
+  const sendStartMessage = (time: number) => {
+    if (!workerRef.current) {
+      return;
+    }
 
-        // If time is up, progress to next round
-        if (diff <= 0) {
-          clearInterval(timeInterval);
+    workerRef.current?.postMessage([
+      {
+        type: "startSeconds",
+        payload: time,
+      },
+      {
+        type: "startTime",
+        payload: Date.now(),
+      },
+      {
+        type: "start",
+      },
+    ]);
+  };
+
+  const sendStopMessage = () => {
+    if (!workerRef.current) {
+      return;
+    }
+
+    workerRef.current.postMessage([
+      {
+        type: "stop",
+      },
+    ]);
+  };
+
+  useEffect(() => {
+    if (!hydrated) {
+      return;
+    } else {
+      setTime(timerStateTimes[timerState]);
+    }
+
+    workerRef.current = new Worker(
+      new URL("@/timer-worker.ts", import.meta.url)
+    );
+
+    workerRef.current.onmessage = (event) => {
+      if (event.data.type === "tick") {
+        const remainingTime = event.data.payload;
+
+        setTime(remainingTime);
+
+        if (remainingTime <= 0) {
           progressRound();
         }
       }
-    }, 100);
+    };
 
-    return () => clearInterval(timeInterval);
-  });
-
-  useEffect(() => {
-    setTime(timerStateTimes[timerState]);
-    setStartTime(Date.now());
-    setStartSeconds(timerStateTimes[timerState]);
-  }, [timerState, timerStateTimes]);
-
-  useEffect(() => {
-    setIsRunning(false);
-  }, [timerConfig]);
+    return () => {
+      workerRef.current?.terminate();
+    };
+  }, [hydrated]);
 
   useEffect(() => {
     window.document.title = `${formatTime(time)} | ${
@@ -87,6 +119,10 @@ export default function Timer() {
     }
   }, [audioVolume]);
 
+  useEffect(() => {
+    reset();
+  }, [timerConfig]);
+
   const getNextState = (timerState: TimerState) => {
     if (timerState === "shortBreak" || timerState === "longBreak") {
       return "work";
@@ -98,34 +134,52 @@ export default function Timer() {
   };
 
   const progressRound = async () => {
-    if (timerState !== "work") {
-      // Reset if prevround was the number of rounds set
-      setCurrentRound(
-        (prevRound) => (prevRound % timerConfig.numberOfRounds) + 1
-      );
-      setIsRunning(timerConfig.autoStartWork);
-    } else {
-      setIsRunning(timerConfig.autoStartBreak);
-    }
+    setIsRunning(false);
+    sendStopMessage();
 
-    setTimerState((timerState) => getNextState(timerState));
+    const nextState = getNextState(timerState);
+    const newTime = timerStateTimes[nextState];
+    setTime(newTime);
+
+    setCurrentRound((prevRound) =>
+      timerState === "work"
+        ? prevRound
+        : (prevRound % timerConfig.numberOfRounds) + 1
+    );
+
+    setTimerState(nextState);
 
     if (audioRef.current) {
       await audioRef.current.play();
     }
+
+    const shouldAutoStart =
+      timerState === "work"
+        ? timerConfig.autoStartBreak
+        : timerConfig.autoStartWork;
+
+    if (shouldAutoStart) {
+      await delay(1500);
+      sendStartMessage(newTime);
+    }
+
+    setIsRunning(shouldAutoStart);
   };
 
   const toggleTimer = () => {
     if (!isRunning) {
-      setStartTime(Date.now());
-      setStartSeconds(time);
+      sendStartMessage(time);
+    } else {
+      sendStopMessage();
     }
+
     setIsRunning(!isRunning);
   };
 
   const reset = () => {
     setTime(timerStateTimes[timerState]);
     setIsRunning(false);
+    sendStopMessage();
   };
 
   const formatTime = (time: number) => {
@@ -143,7 +197,9 @@ export default function Timer() {
       <h1 className="text-4xl mb-2 font-medium">
         {timerStateTitles[timerState]}
       </h1>
-      <h1 className="mb-4 text-8xl font-light font-mono tracking-tighter">{formatTime(time)}</h1>
+      <h1 className="mb-4 text-8xl font-light font-mono tracking-tighter">
+        {formatTime(time)}
+      </h1>
       <div className="flex gap-4">
         <button onClick={toggleTimer} aria-label="Play/pause">
           {!isRunning ? (
