@@ -48,10 +48,6 @@ export default function Timer() {
   }, []);
 
   const sendStartMessage = (time: number) => {
-    if (!workerRef.current) {
-      return;
-    }
-
     workerRef.current?.postMessage([
       {
         type: "startSeconds",
@@ -68,11 +64,7 @@ export default function Timer() {
   };
 
   const sendStopMessage = () => {
-    if (!workerRef.current) {
-      return;
-    }
-
-    workerRef.current.postMessage([
+    workerRef.current?.postMessage([
       {
         type: "stop",
       },
