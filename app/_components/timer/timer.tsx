@@ -71,6 +71,25 @@ export default function Timer() {
     ]);
   };
 
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.repeat) {
+      return;
+    }
+
+    if (event.key === " ") {
+      event.preventDefault();
+      toggleTimer();
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleKeyDown]);
+
   useEffect(() => {
     if (!hydrated) {
       return;
