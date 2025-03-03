@@ -87,7 +87,7 @@ export default function SettingsModal({
       isOpen={isOpen}
       onClose={handleClose}
       className="bg-gray-900/50"
-      placement="center"
+      placement="top-center"
     >
       <ModalContent>
         <ModalHeader>Settings</ModalHeader>
