@@ -9,8 +9,8 @@ export default function InfoScreen() {
           What is a Pomodoro Timer?
         </h2>
         <p className="mt-4">
-          A pomodoro timer is a technique that is used to improve productivity
-          and time managment originally developed by{" "}
+          The pomodoro technique is used to improve productivity
+          and time managment that was originally developed by{" "}
           <a
             href="https://en.wikipedia.org/wiki/Pomodoro_Technique"
             target="_blank"
@@ -24,7 +24,7 @@ export default function InfoScreen() {
         <p className="mt-4">
           The original method used 25 minute work intervals, separated by 5
           minute breaks, and eventually a longer break of 20-30 minutes after 4
-          work intervals. The technique can however be adjusted to suit any work
+          work intervals. However, the technique can be adjusted to suit any work
           style.
         </p>
         <h2 className="text-white text-2xl mt-4 font-semibold">
