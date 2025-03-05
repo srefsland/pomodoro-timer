@@ -11,10 +11,10 @@ Very simple pomodoro timer aimed for simplicity and productivity. Built using Ne
 - **🎯 Accurate Timer**: The timer suffers minimally from clock drift that is common in pomodoro web apps, even when the tab is not active.
 - **⚙️ Customizable Timer**: Adjust the work, short break and long break duration as well as the number of rounds per iteration.
 - **🏞️ Changeable Background**: Tired of the current background? Pick another one!
+- **📝 Task List**: Simple task list for tracking your current todos.
 
 ## Possible additional features
 - **Tracking pomodoros and reports**
-- **Task list**
 
 ## Installing locally
 
