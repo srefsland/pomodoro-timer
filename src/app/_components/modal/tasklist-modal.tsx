@@ -1,5 +1,5 @@
-import { useTaskListStore } from "@/app/_store";
-import { Task } from "@/app/_types";
+import { useTaskListStore } from "@/store";
+import { Task } from "@/types";
 import {
   Accordion,
   AccordionItem,

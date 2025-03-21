@@ -5,8 +5,8 @@ import {
   useSelectedTimerSoundStore,
   useTimerConfigStore,
   useTimerVolumeStore,
-} from "@/app/_store";
-import { delay } from "@/app/_utils";
+} from "@/store";
+import { delay } from "@/lib/utils";
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   IoPause,
@@ -98,7 +98,7 @@ export default function Timer() {
     }
 
     workerRef.current = new Worker(
-      new URL("@/timer-worker.ts", import.meta.url)
+      new URL("@/src/timer-worker.ts", import.meta.url)
     );
 
     workerRef.current.onmessage = (event) => {

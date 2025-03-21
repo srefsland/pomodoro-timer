@@ -1,11 +1,11 @@
-import { defaultTimerConfig } from "@/app/_config";
+import { defaultTimerConfig } from "@/config";
 import {
   useSelectedTimerSoundStore,
   useTimerConfigStore,
   useTimerSoundsStore,
   useTimerVolumeStore,
-} from "@/app/_store";
-import { TimerConfig, TimerSound } from "@/app/_types";
+} from "@/store";
+import { TimerConfig, TimerSound } from "@/types";
 import {
   Divider,
   Modal,

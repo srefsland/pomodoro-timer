@@ -8,7 +8,7 @@ import {
 } from "@heroui/react";
 import { IoMdSettings } from "react-icons/io";
 import { IoImagesOutline, IoList } from "react-icons/io5";
-import { useBackgroundImageStore, useBackgroundImagesStore } from "../_store";
+import { useBackgroundImageStore, useBackgroundImagesStore } from "@/store";
 
 export default function SettingsBar({
   onSettingsClick,

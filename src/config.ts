@@ -1,4 +1,4 @@
-import { TimerConfig } from "./_types";
+import { TimerConfig } from "@/types";
 
 export const defaultTimerConfig: TimerConfig = {
   workMinutes: 25,

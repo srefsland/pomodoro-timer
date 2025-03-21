@@ -1,8 +1,8 @@
 import { UniqueIdentifier } from "@dnd-kit/core";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { defaultTimerConfig } from "./_config";
-import { Task, TimerConfig, TimerSound } from "./_types";
+import { defaultTimerConfig } from "@/config";
+import { Task, TimerConfig, TimerSound } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 
 interface TimerConfigState {

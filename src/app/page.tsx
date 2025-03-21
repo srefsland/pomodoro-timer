@@ -2,9 +2,9 @@
 
 import Image, { StaticImageData } from "next/image";
 import { IoLogoGithub } from "react-icons/io";
-import InfoScreen from "./_components/info-screen";
-import TimerScreen from "./_components/timer-screen";
-import { useBackgroundImageStore, useHydrateStore } from "./_store";
+import InfoScreen from "@/app/_components/info-screen";
+import TimerScreen from "@/app/_components/timer-screen";
+import { useBackgroundImageStore, useHydrateStore } from "../store";
 import darkForest from "/public/img/darkforest.png";
 import mountainousSunset from "/public/img/mountainsunset.jpg";
 import rainstormSummit from "/public/img/rainstormsummit.jpg";
