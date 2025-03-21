@@ -98,7 +98,7 @@ export default function Timer() {
     }
 
     workerRef.current = new Worker(
-      new URL("@/src/timer-worker.ts", import.meta.url)
+      new URL("@/timer-worker.ts", import.meta.url)
     );
 
     workerRef.current.onmessage = (event) => {
