@@ -14,8 +14,23 @@ import {
   IoPlaySkipForwardOutline,
   IoReload,
 } from "react-icons/io5";
+import { TimerConfig } from "@/types";
 
 type TimerState = "work" | "shortBreak" | "longBreak";
+
+const timerStateTitles = {
+  work: "Focus",
+  shortBreak: "Short break",
+  longBreak: "Long break",
+};
+
+const getTimerStateSeconds = (timerConfig: TimerConfig) => {
+  return {
+    work: timerConfig.workMinutes * 60,
+    shortBreak: timerConfig.shortBreakMinutes * 60,
+    longBreak: timerConfig.longBreakMinutes * 60,
+  };
+};
 
 export default function Timer() {
   const [time, setTime] = useState(0);
@@ -30,22 +45,6 @@ export default function Timer() {
   const audioVolume = useTimerVolumeStore((state) => state.audioVolume);
   const timerSound = useSelectedTimerSoundStore((state) => state.timerSound);
   const hydrated = useHydrateStore((state) => state._hasHydrated);
-
-  const timerStateTimes = useMemo(() => {
-    return {
-      work: timerConfig.workMinutes * 60,
-      shortBreak: timerConfig.shortBreakMinutes * 60,
-      longBreak: timerConfig.longBreakMinutes * 60,
-    };
-  }, [timerConfig]);
-
-  const timerStateTitles = useMemo(() => {
-    return {
-      work: "Focus",
-      shortBreak: "Short break",
-      longBreak: "Long break",
-    };
-  }, []);
 
   const sendStartMessage = (time: number) => {
     workerRef.current?.postMessage([
@@ -94,11 +93,11 @@ export default function Timer() {
     if (!hydrated) {
       return;
     } else {
-      setTime(timerStateTimes[timerState]);
+      setTime(getTimerStateSeconds(timerConfig)[timerState]);
     }
 
     workerRef.current = new Worker(
-      new URL("@/timer-worker.ts", import.meta.url)
+      new URL("@/timer.worker.ts", import.meta.url)
     );
 
     workerRef.current.onmessage = (event) => {
@@ -149,7 +148,7 @@ export default function Timer() {
     sendStopMessage();
 
     const nextState = getNextState(timerState);
-    const newTime = timerStateTimes[nextState];
+    const newTime = getTimerStateSeconds(timerConfig)[nextState];
     setTime(newTime);
 
     setCurrentRound((prevRound) =>
@@ -188,7 +187,7 @@ export default function Timer() {
   };
 
   const reset = () => {
-    setTime(timerStateTimes[timerState]);
+    setTime(getTimerStateSeconds(timerConfig)[timerState]);
     setIsRunning(false);
     sendStopMessage();
   };
