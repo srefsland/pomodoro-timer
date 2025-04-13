@@ -1,20 +1,20 @@
 "use client";
 
+import { delay } from "@/lib/utils";
 import {
   useHydrateStore,
   useSelectedTimerSoundStore,
   useTimerConfigStore,
   useTimerVolumeStore,
 } from "@/store";
-import { delay } from "@/lib/utils";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { TimerConfig } from "@/types";
+import { useEffect, useRef, useState } from "react";
 import {
   IoPause,
   IoPlay,
   IoPlaySkipForwardOutline,
   IoReload,
 } from "react-icons/io5";
-import { TimerConfig } from "@/types";
 
 type TimerState = "work" | "shortBreak" | "longBreak";
 
@@ -81,6 +81,18 @@ export default function Timer() {
     }
   };
 
+  const handleWorkerMessage = (event: MessageEvent) => {
+    if (event.data.type === "tick") {
+      const remainingTime = event.data.payload;
+
+      setTime(remainingTime);
+
+      if (remainingTime <= 0) {
+        progressRoundRef.current();
+      }
+    }
+  };
+
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
 
@@ -96,24 +108,12 @@ export default function Timer() {
       setTime(getTimerStateSeconds(timerConfig)[timerState]);
     }
 
-    workerRef.current = new Worker(
-      new URL("@/timer.worker.ts", import.meta.url)
-    );
-
-    workerRef.current.onmessage = (event) => {
-      if (event.data.type === "tick") {
-        const remainingTime = event.data.payload;
-
-        setTime(remainingTime);
-
-        if (remainingTime <= 0) {
-          progressRound();
-        }
-      }
-    };
+    const worker = new Worker(new URL("@/timer.worker.ts", import.meta.url));
+    workerRef.current = worker;
+    workerRef.current.onmessage = handleWorkerMessage;
 
     return () => {
-      workerRef.current?.terminate();
+      worker.terminate();
     };
   }, [hydrated]);
 
@@ -121,7 +121,7 @@ export default function Timer() {
     window.document.title = `${formatTime(time)} | ${
       timerStateTitles[timerState]
     }`;
-  }, [time, timerState, timerStateTitles]);
+  }, [time, timerState]);
 
   useEffect(() => {
     if (audioRef.current) {
@@ -175,6 +175,12 @@ export default function Timer() {
 
     setIsRunning(shouldAutoStart);
   };
+
+  const progressRoundRef = useRef(progressRound);
+
+  useEffect(() => {
+    progressRoundRef.current = progressRound;
+  }, [progressRound]);
 
   const toggleTimer = () => {
     if (!isRunning) {
