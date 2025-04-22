@@ -1,51 +1,72 @@
-let startSeconds = 0;
-let startTime = 0;
-let lastRemainingTime = 0;
-let interval: ReturnType<typeof setInterval> | null = null;
-let isRunning = false;
+type TimerMessage = { type: string; payload: number };
+type TickMessage = { type: "tick"; payload: number };
 
-self.onmessage = (event) => {
-  const messages = event.data;
+interface TimerState {
+  startSeconds: number;
+  startTime: number;
+  lastRemainingTime: number;
+  interval: ReturnType<typeof setInterval> | null;
+  isRunning: boolean;
+}
 
-  messages.forEach((message: { type: string; payload: number }) => {
+const state: TimerState = {
+  startSeconds: 0,
+  startTime: 0,
+  lastRemainingTime: 0,
+  interval: null,
+  isRunning: false,
+};
+
+function clearTimer() {
+  if (state.interval) {
+    clearInterval(state.interval);
+    state.interval = null;
+  }
+}
+
+function resetState() {
+  state.startTime = 0;
+  state.startSeconds = 0;
+  state.lastRemainingTime = 0;
+}
+
+function tick(postMessage: (msg: TickMessage) => void) {
+  if (!state.isRunning && state.interval) {
+    clearTimer();
+    resetState();
+    return;
+  }
+
+  const elapsedTime = Math.floor((Date.now() - state.startTime) / 1000);
+  const remainingTime = state.startSeconds - elapsedTime;
+
+  if (remainingTime !== state.lastRemainingTime) {
+    state.lastRemainingTime = remainingTime;
+    postMessage({ type: "tick", payload: remainingTime });
+  }
+}
+
+export function handleMessages(
+  messages: TimerMessage[],
+  postMessage: (msg: TickMessage) => void
+) {
+  messages.forEach((message) => {
     if (message.type === "startSeconds") {
-      startSeconds = message.payload;
-      lastRemainingTime = startSeconds;
+      state.startSeconds = message.payload;
+      state.lastRemainingTime = state.startSeconds;
     } else if (message.type === "startTime") {
-      startTime = message.payload;
+      state.startTime = message.payload;
     } else if (message.type === "stop") {
-      isRunning = false;
+      state.isRunning = false;
     } else if (message.type === "start") {
-      isRunning = true;
+      state.isRunning = true;
     }
   });
 
-  // Immediately check and clear the interval if necessary
-  if (interval) {
-    clearInterval(interval);
-    interval = null;
-  }
+  clearTimer();
+  state.interval = setInterval(() => tick(postMessage), 100);
+}
 
-  interval = setInterval(() => {
-    if (!isRunning && interval) {
-      clearInterval(interval);
-      interval = null;
-      startTime = 0;
-      startSeconds = 0;
-      lastRemainingTime = 0;
-      return;
-    }
-
-    const elapsedTime = Math.floor((Date.now() - startTime) / 1000);
-    const remainingTime = startSeconds - elapsedTime;
-
-    // Only send a tick if the remaining time has changed
-    if (remainingTime !== lastRemainingTime) {
-      lastRemainingTime = remainingTime;
-      postMessage({
-        type: "tick",
-        payload: remainingTime,
-      });
-    }
-  }, 100);
+self.onmessage = (event) => {
+  handleMessages(event.data, postMessage);
 };
