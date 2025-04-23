@@ -1,4 +1,6 @@
-type TimerMessage = { type: string; payload: number };
+type TimerMessage =
+  | { type: string; payload: number }
+  | { type: "start" | "stop" };
 type TickMessage = { type: "tick"; payload: number };
 
 interface TimerState {
