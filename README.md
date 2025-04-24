@@ -1,4 +1,4 @@
-![pomodoro screen](images/pomodoro-screen.png)
+[![pomodoro screen](images/pomodoro-screen.png)](https://www.pomodorotimer.me/)
 
 # Pomodoro Timer
 
