@@ -1,6 +1,4 @@
-type TimerMessage =
-  | { type: string; payload: number }
-  | { type: "start" | "stop" };
+type TimerMessage = { type: string; payload: number } | { type: "stop" };
 type TickMessage = { type: "tick"; payload: number };
 
 interface TimerState {
@@ -48,27 +46,24 @@ function tick(postMessage: (msg: TickMessage) => void) {
   }
 }
 
-export function handleMessages(
-  messages: TimerMessage[],
-  postMessage: (msg: TickMessage) => void
+export function handleMessage(
+  message: TimerMessage,
+  postMessage: (msg: TickMessage) => void,
+  startTime: number = Date.now()
 ) {
-  messages.forEach((message) => {
-    if (message.type === "startSeconds") {
-      state.startSeconds = message.payload;
-      state.lastRemainingTime = state.startSeconds;
-    } else if (message.type === "startTime") {
-      state.startTime = message.payload;
-    } else if (message.type === "stop") {
-      state.isRunning = false;
-    } else if (message.type === "start") {
-      state.isRunning = true;
-    }
-  });
+  if (message.type === "start") {
+    state.startSeconds = message.payload;
+    state.lastRemainingTime = state.startSeconds;
+    state.startTime = startTime;
+    state.isRunning = true;
+  } else if (message.type === "stop") {
+    state.isRunning = false;
+  }
 
   clearTimer();
   state.interval = setInterval(() => tick(postMessage), 100);
 }
 
 self.onmessage = (event) => {
-  handleMessages(event.data, postMessage);
+  handleMessage(event.data, postMessage);
 };

@@ -47,27 +47,16 @@ export default function Timer() {
   const hydrated = useHydrateStore((state) => state._hasHydrated);
 
   const sendStartMessage = (time: number) => {
-    workerRef.current?.postMessage([
-      {
-        type: "startSeconds",
-        payload: time,
-      },
-      {
-        type: "startTime",
-        payload: Date.now(),
-      },
-      {
-        type: "start",
-      },
-    ]);
+    workerRef.current?.postMessage({
+      type: "start",
+      payload: time,
+    });
   };
 
   const sendStopMessage = () => {
-    workerRef.current?.postMessage([
-      {
-        type: "stop",
-      },
-    ]);
+    workerRef.current?.postMessage({
+      type: "stop",
+    });
   };
 
   const handleKeyDown = (event: KeyboardEvent) => {

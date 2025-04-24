@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { handleMessages } from "../timer.worker";
+import { handleMessage } from "../timer.worker";
 
 let postMessage: ReturnType<typeof vi.fn>;
 
@@ -19,14 +19,7 @@ describe("Timer Module", () => {
     const now = Date.now();
     vi.setSystemTime(now);
 
-    handleMessages(
-      [
-        { type: "startSeconds", payload: 5 },
-        { type: "startTime", payload: now },
-        { type: "start" },
-      ],
-      postMessage
-    );
+    handleMessage({ type: "start", payload: 5 }, postMessage, now);
 
     vi.advanceTimersByTime(1000);
     expect(postMessage).toHaveBeenCalledWith({ type: "tick", payload: 4 });
@@ -39,12 +32,7 @@ describe("Timer Module", () => {
     const now = Date.now();
     vi.setSystemTime(now);
 
-    handleMessages(
-      [
-        { type: "stop" },
-      ],
-      postMessage
-    );
+    handleMessage({ type: "stop" }, postMessage, now);
 
     vi.advanceTimersByTime(2000);
     expect(postMessage).not.toHaveBeenCalled();
@@ -54,17 +42,10 @@ describe("Timer Module", () => {
     const now = Date.now();
     vi.setSystemTime(now);
 
-    handleMessages(
-      [
-        { type: "startSeconds", payload: 2 },
-        { type: "startTime", payload: now },
-        { type: "start" },
-      ],
-      postMessage
-    );
+    handleMessage({ type: "start", payload: 2 }, postMessage, now);
 
     vi.advanceTimersByTime(100);
-    handleMessages([{ type: "stop" }], postMessage);
+    handleMessage({ type: "stop" }, postMessage, now);
 
     vi.advanceTimersByTime(100);
     expect(postMessage).not.toHaveBeenCalledWith({ type: "tick", payload: 1 });
@@ -74,14 +55,7 @@ describe("Timer Module", () => {
     const now = Date.now();
     vi.setSystemTime(now);
 
-    handleMessages(
-      [
-        { type: "startSeconds", payload: 3 },
-        { type: "startTime", payload: now },
-        { type: "start" },
-      ],
-      postMessage
-    );
+    handleMessage({ type: "start", payload: 3 }, postMessage, now);
 
     vi.advanceTimersByTime(100);
     vi.advanceTimersByTime(1000);
