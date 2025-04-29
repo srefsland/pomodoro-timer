@@ -47,7 +47,7 @@ export default function Home() {
         <a
           href={REPO_URL}
           target="_blank"
-          className="fixed bottom-4 right-4 bg-black/85 hover:bg-white/85 hover:text-black text-white p-2 rounded-md transition ease-in-out"
+          className="fixed bottom-4 right-4 text-white p-2 transition ease-in-out"
         >
           <IoLogoGithub className="inline size-6" />
         </a>
