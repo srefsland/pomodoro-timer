@@ -19,6 +19,7 @@ import {
   Switch,
 } from "@heroui/react";
 import { useEffect, useRef, useState } from "react";
+import { useShallow } from "zustand/shallow";
 
 type SettingsModalProps = {
   isOpen: boolean;
@@ -29,18 +30,15 @@ export default function SettingsModal({
   isOpen,
   handleClose,
 }: SettingsModalProps) {
-  const [timerConfig, setTimerConfig] = useTimerConfigStore((state) => [
-    state.timerConfig,
-    state.setTimerConfig,
-  ]);
-  const [timerVolume, setTimerVolume] = useTimerVolumeStore((state) => [
-    state.audioVolume,
-    state.setAudioVolume,
-  ]);
-  const [timerSound, setTimerSound] = useSelectedTimerSoundStore((state) => [
-    state.timerSound,
-    state.setTimerSound,
-  ]);
+  const [timerConfig, setTimerConfig] = useTimerConfigStore(
+    useShallow((state) => [state.timerConfig, state.setTimerConfig])
+  );
+  const [timerVolume, setTimerVolume] = useTimerVolumeStore(
+    useShallow((state) => [state.audioVolume, state.setAudioVolume])
+  );
+  const [timerSound, setTimerSound] = useSelectedTimerSoundStore(
+    useShallow((state) => [state.timerSound, state.setTimerSound])
+  );
   const timerSounds = useTimerSoundsStore((state) => state.sounds);
 
   const [timerConfigForm, setTimerConfigForm] =

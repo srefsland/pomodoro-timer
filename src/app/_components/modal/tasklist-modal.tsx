@@ -11,6 +11,7 @@ import {
 } from "@heroui/react";
 import React, { useEffect, useState } from "react";
 import SortableList from "../sortable-tasklist/sortable-list";
+import { useShallow } from "zustand/shallow";
 
 type TaskListModalProps = {
   isOpen: boolean;
@@ -22,13 +23,15 @@ export default function TaskListModal({
   handleClose,
 }: TaskListModalProps) {
   const [taskList, addTask, removeTask, toggleTaskProgress, reorderTasks] =
-    useTaskListStore((state) => [
-      state.tasks,
-      state.addTask,
-      state.removeTask,
-      state.toggleTaskProgress,
-      state.reorderTasks,
-    ]);
+    useTaskListStore(
+      useShallow((state) => [
+        state.tasks,
+        state.addTask,
+        state.removeTask,
+        state.toggleTaskProgress,
+        state.reorderTasks,
+      ])
+    );
 
   const [currentTasks, setCurrentTasks] = useState(
     taskList.filter((task) => !task.done)
