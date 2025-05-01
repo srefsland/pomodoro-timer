@@ -195,28 +195,38 @@ export default function Timer() {
   };
 
   return (
-    <div className="flex flex-col items-center min-w-72">
+    <div
+      className="flex flex-col items-center min-w-72"
+      data-test-id="timer-round"
+    >
       <h1 className="text-2xl text-white border-1 w-16 py-1 rounded-3xl self-end mb-4 text-center">
         {currentRound}/{timerConfig.numberOfRounds}
       </h1>
-      <h1 className="text-4xl mb-2 font-medium">
+      <h1 className="text-4xl mb-2 font-medium" data-testid="timer-state-title">
         {timerStateTitles[timerState]}
       </h1>
-      <h1 className="mb-4 text-8xl font-light font-mono tracking-tighter">
+      <h1
+        className="mb-4 text-8xl font-light font-mono tracking-tighter"
+        data-testid="timer-clock"
+      >
         {formatTime(time)}
       </h1>
       <div className="flex gap-4">
-        <button onClick={toggleTimer} aria-label="Play/pause">
+        <button
+          onClick={toggleTimer}
+          aria-label="Play/pause"
+          data-testid="play-pause"
+        >
           {!isRunning ? (
             <IoPlay className="size-8 font-bold" />
           ) : (
             <IoPause className="size-8 font-bold" />
           )}
         </button>
-        <button onClick={reset} aria-label="Reset">
+        <button onClick={reset} aria-label="Reset" data-testid="reset">
           <IoReload className="size-8 font-bold" />
         </button>
-        <button onClick={progressRound} aria-label="Reset">
+        <button onClick={progressRound} aria-label="Reset" data-testid="skip">
           <IoPlaySkipForwardOutline className="size-8" />
         </button>
       </div>

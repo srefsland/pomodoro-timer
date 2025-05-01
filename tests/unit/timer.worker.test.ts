@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { handleMessage } from "../timer.worker";
+import { handleMessage } from "../../src/timer.worker";
 
 let postMessage: ReturnType<typeof vi.fn>;
 
