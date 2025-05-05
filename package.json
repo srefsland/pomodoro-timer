@@ -20,7 +20,7 @@
     "react-dom": "^19.1.0",
     "react-icons": "^5.0.1",
     "uuid": "^11.1.0",
-    "zustand": "^5.0.3"
+    "zustand": "^5.0.4"
   },
   "devDependencies": {
     "@playwright/test": "^1.42.1",
