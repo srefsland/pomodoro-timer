@@ -19,7 +19,7 @@ import {
   Switch,
 } from "@heroui/react";
 import { useEffect, useRef, useState } from "react";
-import { useShallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 
 type SettingsModalProps = {
   isOpen: boolean;

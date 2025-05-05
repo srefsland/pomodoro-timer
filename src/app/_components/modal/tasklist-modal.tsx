@@ -11,7 +11,7 @@ import {
 } from "@heroui/react";
 import React, { useEffect, useState } from "react";
 import SortableList from "../sortable-tasklist/sortable-list";
-import { useShallow } from "zustand/shallow";
+import { useShallow } from "zustand/react/shallow";
 
 type TaskListModalProps = {
   isOpen: boolean;
