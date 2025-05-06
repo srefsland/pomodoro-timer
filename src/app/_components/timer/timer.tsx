@@ -8,7 +8,7 @@ import {
   useTimerVolumeStore,
 } from "@/store";
 import { TimerConfig } from "@/types";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   IoPause,
   IoPlay,
@@ -32,6 +32,18 @@ const getTimerStateSeconds = (timerConfig: TimerConfig) => {
   };
 };
 
+const getNextState = (
+  timerState: TimerState,
+  currentRound: number,
+  numberOfRounds: number
+) => {
+  if (timerState === "shortBreak" || timerState === "longBreak") {
+    return "work";
+  }
+
+  return currentRound % numberOfRounds === 0 ? "longBreak" : "shortBreak";
+};
+
 export default function Timer() {
   const [time, setTime] = useState(0);
   const [currentRound, setCurrentRound] = useState(1);
@@ -46,29 +58,21 @@ export default function Timer() {
   const timerSound = useSelectedTimerSoundStore((state) => state.timerSound);
   const hydrated = useHydrateStore((state) => state._hasHydrated);
 
-  const sendStartMessage = (time: number) => {
-    workerRef.current?.postMessage({
-      type: "start",
-      payload: time,
-    });
-  };
+  const sendStartMessage = useCallback(
+    (time: number) => {
+      workerRef.current?.postMessage({
+        type: "start",
+        payload: time,
+      });
+    },
+    [workerRef]
+  );
 
-  const sendStopMessage = () => {
+  const sendStopMessage = useCallback(() => {
     workerRef.current?.postMessage({
       type: "stop",
     });
-  };
-
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.repeat) {
-      return;
-    }
-
-    if (event.key === " ") {
-      event.preventDefault();
-      toggleTimer();
-    }
-  };
+  }, [workerRef]);
 
   const handleWorkerMessage = (event: MessageEvent) => {
     if (event.data.type === "tick") {
@@ -82,13 +86,40 @@ export default function Timer() {
     }
   };
 
+  const toggleTimer = useCallback(() => {
+    if (!isRunning) {
+      sendStartMessage(time);
+    } else {
+      sendStopMessage();
+    }
+
+    setIsRunning(!isRunning);
+  }, [isRunning, sendStartMessage, sendStopMessage, time]);
+
+  const reset = useCallback(() => {
+    setTime(getTimerStateSeconds(timerConfig)[timerState]);
+    setIsRunning(false);
+    sendStopMessage();
+  }, [timerConfig, timerState, sendStopMessage]);
+
   useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.repeat) {
+        return;
+      }
+
+      if (event.key === " ") {
+        event.preventDefault();
+        toggleTimer();
+      }
+    };
+
     window.addEventListener("keydown", handleKeyDown);
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [handleKeyDown]);
+  }, [toggleTimer]);
 
   useEffect(() => {
     if (!hydrated) {
@@ -104,7 +135,7 @@ export default function Timer() {
     return () => {
       worker.terminate();
     };
-  }, [hydrated]);
+  }, [hydrated, timerConfig, timerState]);
 
   useEffect(() => {
     window.document.title = `${formatTime(time)} | ${
@@ -120,23 +151,17 @@ export default function Timer() {
 
   useEffect(() => {
     reset();
-  }, [timerConfig]);
+  }, [timerConfig, reset]);
 
-  const getNextState = (timerState: TimerState) => {
-    if (timerState === "shortBreak" || timerState === "longBreak") {
-      return "work";
-    }
-
-    return currentRound % timerConfig.numberOfRounds === 0
-      ? "longBreak"
-      : "shortBreak";
-  };
-
-  const progressRound = async () => {
+  const progressRound = useCallback(async () => {
     setIsRunning(false);
     sendStopMessage();
 
-    const nextState = getNextState(timerState);
+    const nextState = getNextState(
+      timerState,
+      currentRound,
+      timerConfig.numberOfRounds
+    );
     const newTime = getTimerStateSeconds(timerConfig)[nextState];
     setTime(newTime);
 
@@ -163,29 +188,19 @@ export default function Timer() {
     }
 
     setIsRunning(shouldAutoStart);
-  };
+  }, [
+    timerConfig,
+    timerState,
+    sendStopMessage,
+    currentRound,
+    sendStartMessage,
+  ]);
 
   const progressRoundRef = useRef(progressRound);
 
   useEffect(() => {
     progressRoundRef.current = progressRound;
   }, [progressRound]);
-
-  const toggleTimer = () => {
-    if (!isRunning) {
-      sendStartMessage(time);
-    } else {
-      sendStopMessage();
-    }
-
-    setIsRunning(!isRunning);
-  };
-
-  const reset = () => {
-    setTime(getTimerStateSeconds(timerConfig)[timerState]);
-    setIsRunning(false);
-    sendStopMessage();
-  };
 
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
