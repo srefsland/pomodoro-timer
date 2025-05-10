@@ -40,7 +40,10 @@ export default function SettingsBar({
       </button>
       <Dropdown className="bg-gray-900/50">
         <DropdownTrigger>
-          <button className="flex items-center gap-1 border-white border-1 p-2 rounded-3xl transition ease-in-out hover:bg-white hover:text-black">
+          <button
+            data-testid="change-background-dropdown-trigger"
+            className="flex items-center gap-1 border-white border-1 p-2 rounded-3xl transition ease-in-out hover:bg-white hover:text-black"
+          >
             <span>Select Background</span> <IoImagesOutline className="mr-1" />
           </button>
         </DropdownTrigger>
@@ -51,6 +54,7 @@ export default function SettingsBar({
               onPress={() => {
                 setSelectedBackground(image);
               }}
+              data-testid={`${image}`}
             >
               {image}
             </DropdownItem>

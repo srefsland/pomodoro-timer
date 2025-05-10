@@ -35,6 +35,7 @@ export default function Home() {
               sizes="100vw"
               placeholder="blur"
               className="-z-10 object-cover"
+              data-testid="background-image"
             />
           )}
         </div>
