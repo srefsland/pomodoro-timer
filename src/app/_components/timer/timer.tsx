@@ -1,12 +1,8 @@
 "use client";
 
+import { useTimerAudio } from "@/hooks/use-timer-audio";
 import { delay } from "@/lib/utils";
-import {
-  useHydrateStore,
-  useSelectedTimerSoundStore,
-  useTimerConfigStore,
-  useTimerVolumeStore,
-} from "@/store";
+import { useHydrateStore, useTimerConfigStore } from "@/store";
 import { TimerConfig } from "@/types";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
@@ -50,13 +46,12 @@ export default function Timer() {
   const [isRunning, setIsRunning] = useState(false);
   const [timerState, setTimerState] = useState<TimerState>("work");
 
-  const audioRef = useRef<HTMLAudioElement>(null);
   const workerRef = useRef<Worker | null>(null);
 
   const timerConfig = useTimerConfigStore((state) => state.timerConfig);
-  const audioVolume = useTimerVolumeStore((state) => state.audioVolume);
-  const timerSound = useSelectedTimerSoundStore((state) => state.timerSound);
   const hydrated = useHydrateStore((state) => state._hasHydrated);
+
+  const { playTimerAudio } = useTimerAudio();
 
   const sendStartMessage = useCallback(
     (time: number) => {
@@ -144,12 +139,6 @@ export default function Timer() {
   }, [time, timerState]);
 
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = audioVolume / 100;
-    }
-  }, [audioVolume]);
-
-  useEffect(() => {
     reset();
   }, [timerConfig, reset]);
 
@@ -173,9 +162,7 @@ export default function Timer() {
 
     setTimerState(nextState);
 
-    if (audioRef.current) {
-      await audioRef.current.play();
-    }
+    await playTimerAudio();
 
     const shouldAutoStart =
       timerState === "work"
@@ -245,9 +232,6 @@ export default function Timer() {
           <IoPlaySkipForwardOutline className="size-8" />
         </button>
       </div>
-      {timerSound.file && (
-        <audio ref={audioRef} src={timerSound.file} crossOrigin="anonymous" />
-      )}
     </div>
   );
 }
