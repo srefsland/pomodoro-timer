@@ -43,3 +43,7 @@ next-env.d.ts
 
 tests-examples/
 *storybook.log
+
+.env
+
+/src/generated/prisma/
