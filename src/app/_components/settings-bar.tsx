@@ -9,6 +9,9 @@ import {
 import { IoMdSettings } from "react-icons/io";
 import { IoImagesOutline, IoList } from "react-icons/io5";
 import { useBackgroundImageStore, useBackgroundImagesStore } from "@/store";
+import { authClient } from "@/lib/auth-client";
+import SettingsBarButton from "./ui/settings-bar-button";
+import Link from "next/link";
 
 export default function SettingsBar({
   onSettingsClick,
@@ -24,20 +27,26 @@ export default function SettingsBar({
     (state) => state.setBackgroundImage
   );
 
+  const { data: session } = authClient.useSession();
+
+  const signInOutButton = session ? (
+    <SettingsBarButton onClick={() => authClient.signOut()}>
+      Sign Out
+    </SettingsBarButton>
+  ) : (
+    <Link href="/login">
+      <SettingsBarButton>Sign In</SettingsBarButton>
+    </Link>
+  );
+
   return (
     <div className="absolute top-4 right-4 flex gap-4">
-      <button
-        className="flex items-center gap-1 border-white border-1 p-2 rounded-3xl transition ease-in-out hover:bg-white hover:text-black"
-        onClick={onSettingsClick}
-      >
+      <SettingsBarButton onClick={onSettingsClick}>
         <span>Settings</span> <IoMdSettings />
-      </button>
-      <button
-        className="flex items-center gap-1 border-white border-1 p-2 rounded-3xl transition ease-in-out hover:bg-white hover:text-black"
-        onClick={onTaskListClick}
-      >
+      </SettingsBarButton>
+      <SettingsBarButton onClick={onTaskListClick}>
         <span>Task List</span> <IoList />
-      </button>
+      </SettingsBarButton>
       <Dropdown className="bg-gray-900/50">
         <DropdownTrigger>
           <button
@@ -60,7 +69,8 @@ export default function SettingsBar({
             </DropdownItem>
           ))}
         </DropdownMenu>
-      </Dropdown>
+      </Dropdown>{" "}
+      {signInOutButton}
     </div>
   );
 }

@@ -46,4 +46,4 @@ tests-examples/
 
 .env
 
-/src/generated/prisma/
+/src/generated/*

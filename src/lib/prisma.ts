@@ -1,6 +1,6 @@
 import "server-only";
 
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@/generated/client";
 import { withAccelerate } from "@prisma/extension-accelerate";
 
 const prisma = new PrismaClient().$extends(withAccelerate());
