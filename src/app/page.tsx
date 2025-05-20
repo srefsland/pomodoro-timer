@@ -9,6 +9,7 @@ import darkForest from "/public/img/darkforest.png";
 import mountainousSunset from "/public/img/mountainsunset.jpg";
 import rainstormSummit from "/public/img/rainstormsummit.jpg";
 import { authClient } from "@/lib/auth-client";
+import Loading from "./_components/ui/loading";
 
 const imageImports: { [key: string]: StaticImageData } = {
   "Dark Forest": darkForest,
@@ -25,8 +26,8 @@ export default function Home() {
   const hasHydrated = useHydrateStore((state) => state._hasHydrated);
   const { isPending } = authClient.useSession();
 
-  if (!hasHydrated || isPending) {
-    return null;
+  if (isPending || !hasHydrated) {
+    return <Loading />;
   }
 
   return (
