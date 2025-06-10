@@ -9,7 +9,7 @@ import {
   ModalContent,
   ModalHeader,
 } from "@heroui/react";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import SortableList from "../sortable-tasklist/sortable-list";
 import { useShallow } from "zustand/react/shallow";
 
@@ -33,12 +33,9 @@ export default function TaskListModal({
       ])
     );
 
-  const [currentTasks, setCurrentTasks] = useState(
-    taskList.filter((task) => !task.done)
-  );
-  const [doneTasks, setDoneTasks] = useState(
-    taskList.filter((task) => task.done)
-  );
+  const currentTasks = taskList.filter((task) => !task.done);
+  const doneTasks = taskList.filter((task) => task.done);
+
   const [newTaskForm, setNewTaskForm] = useState("");
 
   const inputRef = React.useRef<HTMLInputElement>(null);
@@ -58,14 +55,6 @@ export default function TaskListModal({
   const handleChangeDoneTasks = (newDoneTasks: Task[]) => {
     reorderTasks(currentTasks, newDoneTasks);
   };
-
-  useEffect(() => {
-    const newCurrentTasks = taskList.filter((task) => !task.done);
-    const newDoneTasks = taskList.filter((task) => task.done);
-
-    setCurrentTasks(newCurrentTasks);
-    setDoneTasks(newDoneTasks);
-  }, [taskList]);
 
   return (
     <Modal
